@@ -1,4 +1,4 @@
-package EnvironmentControlUnit;
+package EnvironmentController;
 
 public class main {
     
