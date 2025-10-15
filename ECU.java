@@ -1,3 +1,4 @@
-public class EnvironmentController {
-    
+public class ECU 
+{
+    //Functionality to manage the entire ECU.     
 }
