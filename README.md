@@ -1,2 +1,2 @@
 # Environment Controller
-Repository to build an inflight media system for a university project
+Repository to build an aircraft environment controller for a university project
