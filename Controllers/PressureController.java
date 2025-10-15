@@ -1,8 +1,8 @@
 package Controllers;
 
-import Interfaces.ControllerInterface;
+import Abstracts.Controller;
 
-public class PressureController implements ControllerInterface
+public class PressureController extends Controller
 {
     //Functionality to control pressure in the aircraft.        
 }

@@ -1,8 +1,8 @@
 package Controllers;
 
-import Interfaces.ControllerInterface;
+import Abstracts.Controller;
 
-public class HumidityController implements ControllerInterface 
+public class HumidityController extends Controller
 {
-    //Functionality to control humidity in the aircraft.    
+    //Functionality to control humidity in the aircraft.   
 }

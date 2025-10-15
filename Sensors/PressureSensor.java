@@ -1,8 +1,8 @@
 package Sensors;
 
-import Interfaces.SensorInterface;
+import Abstracts.Sensor;
 
-public class PressureSensor implements SensorInterface
+public class PressureSensor extends Sensor
 {
     //Functionality to identify pressure. 
 }

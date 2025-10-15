@@ -1,8 +1,8 @@
 package Sensors;
 
-import Interfaces.SensorInterface;
+import Abstracts.Sensor;
 
-public class TemperatureSensor implements SensorInterface
+public class TemperatureSensor extends Sensor
 {
     //Functionality to identify temperature. 
 }

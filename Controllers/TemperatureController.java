@@ -1,8 +1,8 @@
 package Controllers;
 
-import Interfaces.ControllerInterface;
+import Abstracts.Controller;
 
-public class TemperatureController implements ControllerInterface 
+public class TemperatureController extends Controller
 {
     //Functionality to control temperature in the aircraft.    
 }

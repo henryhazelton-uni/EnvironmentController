@@ -1,8 +1,8 @@
 package Sensors;
 
-import Interfaces.SensorInterface;
+import Abstracts.Sensor;
 
-public class HumiditySensor implements SensorInterface
+public class HumiditySensor extends Sensor
 {
     //Functionality to identify humidity.   
 }
