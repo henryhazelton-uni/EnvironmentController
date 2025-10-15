@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Launch JavaFX App",
+      "request": "launch",
+      "mainClass": "ECU",
+      "vmArgs": "--module-path C:\\Users\\aryan\\OneDrive - Blackpool and The Fylde College\\code\\EnvironmentController\\lib --add-modules javafx.controls,javafx.fxml"
+    }
+  ]
+}
