@@ -1,6 +1,6 @@
-package Abstracts;
+package com.atmosforge.ecu.abstracts;
 
-import Interfaces.SensorInterface;
+import com.atmosforge.ecu.interfaces.SensorInterface;
 
 public class Sensor implements SensorInterface {
     
