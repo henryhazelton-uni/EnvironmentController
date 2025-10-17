@@ -1,6 +1,6 @@
-package Controllers;
+package com.atmosforge.ecu.controllers;
 
-import Abstracts.Controller;
+import com.atmosforge.ecu.abstracts.Controller;
 
 public class HumidityController extends Controller
 {
