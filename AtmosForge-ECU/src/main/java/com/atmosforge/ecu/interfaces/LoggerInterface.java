@@ -1,4 +1,4 @@
-package Interfaces;
+package com.atmosforge.ecu.interfaces;
 
 public interface LoggerInterface
 {
