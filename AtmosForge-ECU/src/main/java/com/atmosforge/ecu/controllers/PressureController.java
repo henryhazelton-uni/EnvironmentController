@@ -1,6 +1,6 @@
 package com.atmosforge.ecu.controllers;
 
-import Abstracts.Controller;
+import com.atmosforge.ecu.abstracts.Controller;
 
 public class PressureController extends Controller
 {
