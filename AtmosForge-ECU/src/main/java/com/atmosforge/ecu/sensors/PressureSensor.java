@@ -1,6 +1,6 @@
-package Sensors;
+package com.atmosforge.ecu.sensors;
 
-import Abstracts.Sensor;
+import com.atmosforge.ecu.abstracts.Sensor;
 
 public class PressureSensor extends Sensor
 {
