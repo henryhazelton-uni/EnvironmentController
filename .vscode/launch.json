@@ -3,6 +3,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "ECU",
+      "request": "launch",
+      "mainClass": "com.atmosforge.ecu.core.ECU",
+      "projectName": "AtmosForge-ECU"
+    },
+    {
+      "type": "java",
+      "name": "DashboardControl",
+      "request": "launch",
+      "mainClass": "com.atmosforge.ecu.controllers.DashboardControl",
+      "projectName": "AtmosForge-ECU"
+    },
+    {
+      "type": "java",
       "name": "Launch JavaFX App",
       "request": "launch",
       "mainClass": "ECU",
