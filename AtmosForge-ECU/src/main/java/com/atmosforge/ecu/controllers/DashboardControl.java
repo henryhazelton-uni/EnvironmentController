@@ -14,7 +14,7 @@ public class DashboardControl extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        // Top bar
+        //Top bar
         HBox topBar = new HBox();
         topBar.setPadding(new Insets(10));
         topBar.setStyle("-fx-background-color: #2c3e50;");
@@ -22,7 +22,7 @@ public class DashboardControl extends Application {
         title.setStyle("-fx-text-fill: white; -fx-font-size: 20px;");
         topBar.getChildren().add(title);
 
-        // Side menu
+        //Side menu
         VBox sideMenu = new VBox(10);
         sideMenu.setPadding(new Insets(10));
         sideMenu.setStyle("-fx-background-color: #34495e;");
@@ -34,14 +34,14 @@ public class DashboardControl extends Application {
 
         sideMenu.getChildren().addAll(btnTemperature, btnHumidity, btnPressure);
 
-        // Main content area
+        //Main content area
         VBox mainContent = new VBox();
         mainContent.setPadding(new Insets(20));
         Label welcomeLabel = new Label("Welcome to the Environment Control Dashboard");
         welcomeLabel.setStyle("-fx-font-size: 16px;");
         mainContent.getChildren().add(welcomeLabel);
 
-        // Layout setup
+        //Layout setup
         BorderPane root = new BorderPane();
         root.setTop(topBar);
         root.setLeft(sideMenu);
@@ -56,7 +56,5 @@ public class DashboardControl extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
-    //test to see if branch works
 
 }
