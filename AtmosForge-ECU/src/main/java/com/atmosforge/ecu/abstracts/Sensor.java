@@ -5,7 +5,7 @@ import com.atmosforge.ecu.interfaces.SensorInterface;
 public class Sensor implements SensorInterface
 {
     //These values will be set when the class is called.
-    private final String sensorName;
+    private String sensorName;
     private double targetValue;
     private double targetTolerance;
     private double value;
@@ -22,7 +22,7 @@ public class Sensor implements SensorInterface
     public double getLowRange()
     {
         double acceptableLow = this.targetValue - this.targetTolerance;
-        return = acceptableLow;
+        return acceptableLow;
     }
 
     //Calculates the higher boundary for the acceprable range.
