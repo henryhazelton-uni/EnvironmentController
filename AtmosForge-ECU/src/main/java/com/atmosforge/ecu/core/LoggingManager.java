@@ -34,7 +34,7 @@ public class LoggingManager implements LoggerInterface
     @Override
     public void logError(String message) 
     {
-        System.out.println(timestamp() + " [ERROR] " + message);
+        System.err.println(timestamp() + " [ERROR] " + message);
     }
 
     @Override
