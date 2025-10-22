@@ -11,6 +11,5 @@ com/atmosforge/ecu/interfaces/ControllerInterface.class
 com/atmosforge/ecu/abstracts/Sensor.class
 com/atmosforge/ecu/sensors/HumiditySensor.class
 com/atmosforge/ecu/controllers/HumidityController.class
-com/atmosforge/ecu/core/ECU$Main.class
 com/atmosforge/ecu/controllers/DashboardControl.class
 com/atmosforge/ecu/controllers/PressureController.class
