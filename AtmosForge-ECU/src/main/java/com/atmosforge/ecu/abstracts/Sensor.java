@@ -33,6 +33,7 @@ public class Sensor implements SensorInterface
     }
 
     //Checks the value is in the acceptable range, informs/alerts accordingly and sets true/false.
+    @Override
     public boolean checkWithinRange()
     {
         if(this.getValue() >= this.getLowRange() && this.getValue() <= this.getHighRange())
@@ -48,12 +49,14 @@ public class Sensor implements SensorInterface
     }
 
     //Logger to inform the system we are in acceptable ranges and what the current value is.
+    @Override
     public void informSystem()
     {
         //TODO Add code
     }
 
     //Logger to alert the system we are not in acceptable ranges and what the current value is.
+    @Override
     public void alertSystem()
     {
         //TODO Add code

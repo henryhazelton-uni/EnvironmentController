@@ -36,6 +36,7 @@ public class PressureSensor extends Sensor
     }
 
     //Checks the value is in the acceptable range, informs/alerts accordingly and sets true/false.
+    @Override
     public boolean checkWithinRange()
     {
         if(this.getValue() >= this.getLowRange() && this.getValue() <= this.getHighRange())
