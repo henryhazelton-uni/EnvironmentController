@@ -1,5 +1,5 @@
 package com.atmosforge.ecu;
 
-public class TestCase {
+public class TestSuiteTest {
 
 }
