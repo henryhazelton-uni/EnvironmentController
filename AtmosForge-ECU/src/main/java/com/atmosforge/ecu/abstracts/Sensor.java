@@ -4,42 +4,38 @@ import com.atmosforge.ecu.interfaces.SensorInterface;
 
 public class Sensor implements SensorInterface
 {
-    private String sensorName;
-    private int targetValue;
-    private int targetTolerance;
+    //These values will be set when the class is called.
+    private final String sensorName;
+    private double targetValue;
+    private double targetTolerance;
+    private double value;
     
-    public Sensor (String name, int target, int tolerance)
+    //Constructor needs these values to be set when calling the class, and setting them to the above when it is called.
+    public Sensor (String name, double target, double tolerance)
     {
         this.sensorName = name;
         this.targetValue = target;
         this.targetTolerance = tolerance;
-    }
+    }    
     
-    public int getValue()
+    //Calculates the lower boundary for the acceptable range.
+    public double getLowRange()
     {
-        return value;
-    }
-
-    public void setValue(int value)
-    {
-        this.value = value;
-    }
-    
-    public int getLowRange()
-    {
-        new int acceptableLow = this.targetValue - this.targetTolerance;
+        double acceptableLow = this.targetValue - this.targetTolerance;
         return = acceptableLow;
     }
 
-    public int getHighRange()
+    //Calculates the higher boundary for the acceprable range.
+    public double getHighRange()
     {
-        new int acceptableHigh = this.targetValue + this.targetTolerance;
+        double acceptableHigh = this.targetValue + this.targetTolerance;
         return acceptableHigh;
     }
 
-    public boolen checkWithinRange()
+    //Checks the value is in the acceptable range, informs/alerts accordingly and sets true/false.
+    public boolean checkWithinRange()
     {
-        if(this.getValue() > this.getLowRange() && this.getValue() < this.getHighRange())
+        if(this.getValue() >= this.getLowRange() && this.getValue() <= this.getHighRange())
         {
             informSystem();
             return true;
@@ -51,15 +47,53 @@ public class Sensor implements SensorInterface
         }
     }
 
+    //Logger to inform the system we are in acceptable ranges and what the current value is.
     public void informSystem()
     {
         //TODO Add code
     }
 
+    //Logger to alert the system we are not in acceptable ranges and what the current value is.
     public void alertSystem()
     {
         //TODO Add code
     }
 
-    //TODO Add getters/setters.
+    // Getters and setters.
+
+  public double getValue()
+    {
+        return value;
+    }
+
+    public void setValue(double value)
+    {
+        this.value = value;
+    }
+
+    public String getName()
+    {
+        return sensorName;
+    }
+
+    public void setName(String name)
+    {
+        this.sensorName = name;
+    }
+
+    public double getTargetValue() {
+        return targetValue;
+    }
+
+    public void setTargetValue(double targetValue) {
+        this.targetValue = targetValue;
+    }
+
+    public double getTargetTolerance() {
+        return targetTolerance;
+    }
+
+    public void setTargetTolerance(double tolerance) {
+        this.targetTolerance = tolerance;
+    }
 }
