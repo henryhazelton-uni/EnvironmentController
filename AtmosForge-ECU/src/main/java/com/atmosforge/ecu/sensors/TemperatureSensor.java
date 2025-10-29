@@ -8,10 +8,6 @@ public class TemperatureSensor extends Sensor
 
     public TemperatureSensor(String name, double target, double tolerance)
     {
-        this.setName(name);
-        this.setTargetValue(target);
-        this.setTargetTolerance(tolerance);
-        
-        //Add line to get initial value from test case.
+        super(name, target, tolerance);        
     }
 }

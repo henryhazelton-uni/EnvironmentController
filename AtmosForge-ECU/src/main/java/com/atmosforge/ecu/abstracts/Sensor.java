@@ -32,71 +32,52 @@ public class Sensor implements SensorInterface
         return acceptableHigh;
     }
 
-    //Checks the value is in the acceptable range, informs/alerts accordingly and sets true/false.
-    @Override
-    public boolean checkWithinRange()
-    {
-        if(this.getValue() >= this.getLowRange() && this.getValue() <= this.getHighRange())
-        {
-            informSystem();
-            return true;
-        }
-        else
-        {
-            alertSystem();
-            return false;
-        }
-    }
-
-    //Logger to inform the system we are in acceptable ranges and what the current value is.
-    @Override
-    public void informSystem()
-    {
-        //TODO Add code
-    }
-
-    //Logger to alert the system we are not in acceptable ranges and what the current value is.
-    @Override
-    public void alertSystem()
-    {
-        //TODO Add code
-    }
-
     // Getters and setters.
 
-  public double getValue()
+    @Override
+    public double getValue() 
     {
         return value;
     }
 
-    public void setValue(double value)
+    @Override
+    public void setValue(double value) 
     {
         this.value = value;
     }
 
-    public String getName()
+    @Override
+    public String getName() 
     {
         return sensorName;
     }
 
-    public void setName(String name)
+    public void setName(String name) 
     {
         this.sensorName = name;
     }
 
-    public double getTargetValue() {
+    @Override
+    public double getTargetValue() 
+    {
         return targetValue;
     }
 
-    public void setTargetValue(double targetValue) {
+    //For dashboard control.
+    public void setTargetValue(double targetValue) 
+    {
         this.targetValue = targetValue;
     }
 
-    public double getTargetTolerance() {
+    @Override
+    public double getTargetTolerance() 
+    {
         return targetTolerance;
     }
 
-    public void setTargetTolerance(double tolerance) {
+    //For dashboard control.
+    public void setTargetTolerance(double tolerance) 
+    {
         this.targetTolerance = tolerance;
     }
 }
