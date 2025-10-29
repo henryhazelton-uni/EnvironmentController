@@ -1,6 +1,12 @@
 package com.atmosforge.ecu.actuators;
 
-public class HumidityActuator {
+import com.atmosforge.ecu.abstracts.Actuator;
 
+public class HumidityActuator extends Actuator
+{
+    public HumidityActuator()
+    {
+        
+    }
     
 }

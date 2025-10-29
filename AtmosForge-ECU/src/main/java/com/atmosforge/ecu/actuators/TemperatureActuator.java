@@ -1,6 +1,12 @@
 package com.atmosforge.ecu.actuators;
 
-public class TemperatureActuator {
+import com.atmosforge.ecu.abstracts.Actuator;
 
+public class TemperatureActuator extends Actuator
+{
+    public TemperatureActuator()
+    {
+        
+    }
     
 }
