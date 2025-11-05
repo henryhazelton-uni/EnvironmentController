@@ -4,9 +4,5 @@ import com.atmosforge.ecu.abstracts.Actuator;
 
 public class PressureActuator extends Actuator
 {
-    public PressureActuator()
-    {
-        
-    }
-    
+    public PressureActuator(String name){}
 }

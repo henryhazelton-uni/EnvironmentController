@@ -4,9 +4,5 @@ import com.atmosforge.ecu.abstracts.Actuator;
 
 public class TemperatureActuator extends Actuator
 {
-    public TemperatureActuator()
-    {
-        
-    }
-    
+    public TemperatureActuator(String name){}
 }
