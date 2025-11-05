@@ -5,6 +5,7 @@ import com.atmosforge.ecu.abstracts.Sensor;
 public interface ControllerInterface 
 {
     //Interface to provide structure for controllers in the ECU.
+
     //Check the value of the sensor's variable is within the acceptable range of the target value
     boolean checkWithinRange(Sensor sensor);
     
