@@ -1,5 +1,7 @@
 package com.atmosforge.ecu.abstracts;
 
+import com.atmosforge.ecu.core.LoggingManager;
+import com.atmosforge.ecu.interfaces.LoggerInterface;
 import com.atmosforge.ecu.interfaces.SensorInterface;
 
 public class Sensor implements SensorInterface
@@ -10,6 +12,9 @@ public class Sensor implements SensorInterface
     private double targetTolerance;
     private double value;
     
+    // Initalise a logger for each sensor
+    protected static final LoggerInterface logger = LoggingManager.getLogger();
+
     //Constructor needs these values to be set when calling the class, and setting them to the above when it is called.
     public Sensor (String name, double target, double tolerance)
     {
@@ -44,6 +49,7 @@ public class Sensor implements SensorInterface
     public void setValue(double value) 
     {
         this.value = value;
+        logger.logInfo(sensorName + "reading set to" + targetValue);
     }
 
     @Override
@@ -55,6 +61,7 @@ public class Sensor implements SensorInterface
     public void setName(String name) 
     {
         this.sensorName = name;
+        logger.logInfo("Name set to:" + name);
     }
 
     @Override
@@ -67,6 +74,7 @@ public class Sensor implements SensorInterface
     public void setTargetValue(double targetValue) 
     {
         this.targetValue = targetValue;
+        logger.logInfo(sensorName + "target set to: " + targetValue);
     }
 
     @Override
@@ -79,5 +87,6 @@ public class Sensor implements SensorInterface
     public void setTargetTolerance(double tolerance) 
     {
         this.targetTolerance = tolerance;
+        logger.logInfo(sensorName + "target tolerance set to" + tolerance);
     }
 }
