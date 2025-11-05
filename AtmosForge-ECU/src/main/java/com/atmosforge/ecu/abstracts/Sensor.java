@@ -12,7 +12,7 @@ public class Sensor implements SensorInterface
     private double targetTolerance;
     private double value;
     
-    // Initalise a logger for humidity sensor
+    // Initalise a logger for each sensor
     protected static final LoggerInterface logger = LoggingManager.getLogger();
 
     //Constructor needs these values to be set when calling the class, and setting them to the above when it is called.
