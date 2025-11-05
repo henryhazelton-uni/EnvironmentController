@@ -31,8 +31,12 @@ public class ECU {
     
     public static void main(String[] args) {
         System.out.println("Starting AtmosForge Environment Control Unit...");
-        // Later: initialize your ECU modules or JavaFX app here
+        //Later: initialize ECU modules or JavaFX app here
         ECU ecu = new ECU();
+        //Set initial test values
+        ecu.getTemperatureSensor().setValue(25);
+        ecu.getPressureSensor().setValue(101);
+        ecu.getHumiditySensor().setValue(60);
         DashboardControl.setEcu(ecu);
         DashboardControl.main(args);
     
