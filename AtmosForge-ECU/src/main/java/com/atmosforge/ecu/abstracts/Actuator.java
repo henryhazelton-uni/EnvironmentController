@@ -5,16 +5,20 @@ import com.atmosforge.ecu.interfaces.ActuatorInterface;
 public class Actuator implements ActuatorInterface
 {
 
+    private boolean actuatorOn;
+
     @Override
     public void activateActuator() 
     {
-        
+        //Add logging and dashboard interactions to show Actuator is active.
+        actuatorOn = true;
     }
 
     @Override
     public void deactivateActuator() 
     {
-        
+        //Add logging and dashboard interactions to show Actuator is inactive.
+        actuatorOn = false;
     }
 
     @Override
@@ -23,7 +27,7 @@ public class Actuator implements ActuatorInterface
         //Initiate new value
         double newValue = sensor.getValue();
 
-        if (sensor.getValue() <= sensor.getHighRange() && sensor.getValue() > sensor.getTargetValue())
+        if (actuatorOn && sensor.getValue() <= sensor.getHighRange() && sensor.getValue() > sensor.getTargetValue())
         {
             //If sensor reading is within the acceptable range on the high side, make small additions to the value.
 
@@ -40,7 +44,7 @@ public class Actuator implements ActuatorInterface
             }
         }
 
-        else if (sensor.getValue() >= sensor.getLowRange() && sensor.getValue() < sensor.getTargetValue())
+        else if (actuatorOn && sensor.getValue() >= sensor.getLowRange() && sensor.getValue() < sensor.getTargetValue())
         {
             //If sensor reading is wihtin acceptable range on the low side, , make small subtractions from the value
 
@@ -57,7 +61,7 @@ public class Actuator implements ActuatorInterface
             }
         }
 
-        else if (sensor.getValue() < sensor.getLowRange())
+        else if (actuatorOn && sensor.getValue() < sensor.getLowRange())
         {
             //If sensor reading is below the low acceptable range, make large additions to the value
 
@@ -65,7 +69,7 @@ public class Actuator implements ActuatorInterface
 
         }
 
-        else if (sensor.getValue() > sensor.getHighRange())
+        else if (actuatorOn && sensor.getValue() > sensor.getHighRange())
         {
             //If sensor reading is above the high acceptable range, make large subtractions from the value
 

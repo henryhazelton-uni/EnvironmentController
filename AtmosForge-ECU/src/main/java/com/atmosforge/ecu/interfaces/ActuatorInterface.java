@@ -15,5 +15,5 @@ public interface ActuatorInterface
     //Simulate the change in value from the actuator for a sensor to read.
     void simulateValueChange(Sensor sensor);
 
-
+    
 }
