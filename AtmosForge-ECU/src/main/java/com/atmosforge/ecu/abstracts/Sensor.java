@@ -1,5 +1,7 @@
 package com.atmosforge.ecu.abstracts;
 
+import com.atmosforge.ecu.core.LoggingManager;
+import com.atmosforge.ecu.interfaces.LoggerInterface;
 import com.atmosforge.ecu.interfaces.SensorInterface;
 
 public class Sensor implements SensorInterface
@@ -10,6 +12,9 @@ public class Sensor implements SensorInterface
     private double targetTolerance;
     private double value;
     
+    // Initalise a logger for humidity sensor
+    protected static final LoggerInterface logger = LoggingManager.getLogger();
+
     //Constructor needs these values to be set when calling the class, and setting them to the above when it is called.
     public Sensor (String name, double target, double tolerance)
     {
