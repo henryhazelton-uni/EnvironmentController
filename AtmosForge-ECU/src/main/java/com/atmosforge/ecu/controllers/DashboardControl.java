@@ -1,5 +1,7 @@
 package com.atmosforge.ecu.controllers;
 
+import com.atmosforge.ecu.core.ECU;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -19,6 +21,14 @@ public class DashboardControl extends Application
 {
 
     private static VBox loggingPanelReference;
+
+    //Static ECU reference (so main can set it before JavaFX launch)
+    private static ECU ecu;
+
+    //Setter method to assign ECU before launch
+    public static void setEcu(ECU ecuInstance) {
+        ecu = ecuInstance;
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -48,7 +58,7 @@ public class DashboardControl extends Application
         mainContent.setFillWidth(true);
         VBox.setVgrow(mainContent, Priority.ALWAYS);
 
-        Label welcomeLabel = new Label("Welcome to the Environment Control Dashboard");
+        Label welcomeLabel = new Label("Environment Control Dashboard");
         welcomeLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
         mainContent.getChildren().add(welcomeLabel);
 
@@ -58,15 +68,19 @@ public class DashboardControl extends Application
         statusRow.setStyle("-fx-background-color: #ecf0f1;");
         statusRow.setPrefHeight(Region.USE_COMPUTED_SIZE);
 
+        //Use ECU values here
         statusRow.getChildren().addAll(
-            createStatusIndicator("Temperature", "#2ecc71", "22.5°C"),
-            createStatusIndicator("Pressure", "#f1c40f", "101 kPa"),
-            createStatusIndicator("Humidity", "#e74c3c", "78%")
+            createStatusIndicator("Temperature", "#2ecc71",
+                String.format("%.1f°C", ecu.getTemperatureSensor().getValue())),
+            createStatusIndicator("Pressure", "#f1c40f",
+                String.format("%.1f kPa", ecu.getPressureSensor().getValue())),
+            createStatusIndicator("Humidity", "#e74c3c",
+                String.format("%.1f%%", ecu.getHumiditySensor().getValue()))
         );
 
         mainContent.getChildren().add(statusRow);
 
-        //Space for potential logging system area if we add
+        //Logging area
         VBox loggingPanel = new VBox();
         loggingPanelReference = loggingPanel;
         loggingPanel.setPadding(new Insets(10));
@@ -90,7 +104,7 @@ public class DashboardControl extends Application
         primaryStage.show();
     }
 
-    //method to create labeled status indicators with value
+    //Matches the expected 3-argument signature
     private Node createStatusIndicator(String labelText, String colorHex, String valueText) {
         VBox indicatorBox = new VBox(10);
         indicatorBox.setPadding(new Insets(10));
@@ -138,3 +152,4 @@ public class DashboardControl extends Application
         launch(args);
     }
 }
+

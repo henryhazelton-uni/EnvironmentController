@@ -10,14 +10,19 @@ public class Controller implements ControllerInterface
     // Initalise a logger for each sensor
     protected static final LoggerInterface logger = LoggingManager.getLogger();
 
+    private String controllerName;
+
+    public Controller(String name) 
+    {
+        this.controllerName = name;
+    }
+
     @Override
     public boolean checkWithinRange(Sensor sensor) 
     {
-        double targetTolerance = sensor.getTargetTolerance();
-        double targetValue = sensor.getTargetValue();
         double value = sensor.getValue();
         
-        if (value <= targetValue + targetTolerance || value >= targetValue - targetTolerance)
+        if (value <= sensor.getHighRange() || value >= sensor.getLowRange())
         {
             return true;
         }
@@ -30,11 +35,11 @@ public class Controller implements ControllerInterface
     }
 
     @Override
-    public void alter() 
+    public void alter(Actuator actuator, Sensor sensor) 
     {
         //Use actuators to change value towards target value.   
-        
-        //TODO Add code
+        actuator.simulateValueChange(sensor);
+
     }
 
     //Logger to inform the system we are in acceptable ranges and what the current value is.
@@ -51,4 +56,15 @@ public class Controller implements ControllerInterface
         //TODO Add code
     }
     
+
+    public String getName()
+    {
+        return controllerName;
+    }
+
+    public void setName(String name)
+    {
+        this.controllerName = name;
+    }
+
 }
