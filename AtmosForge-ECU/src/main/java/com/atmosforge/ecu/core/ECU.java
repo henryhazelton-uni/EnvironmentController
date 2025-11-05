@@ -47,8 +47,6 @@ public class ECU {
         DashboardControl.setEcu(ecu);
         DashboardControl.main(args);
     }
-    
-
  
     public TemperatureSensor getTemperatureSensor() {
         return temperatureSensor;
