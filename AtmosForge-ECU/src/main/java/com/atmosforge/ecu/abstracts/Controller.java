@@ -1,8 +1,14 @@
 package com.atmosforge.ecu.abstracts;
 
+import com.atmosforge.ecu.core.LoggingManager;
 import com.atmosforge.ecu.interfaces.ControllerInterface;
+import com.atmosforge.ecu.interfaces.LoggerInterface;
 
-public class Controller implements ControllerInterface{
+public class Controller implements ControllerInterface
+{
+
+    // Initalise a logger for each sensor
+    protected static final LoggerInterface logger = LoggingManager.getLogger();
 
     @Override
     public boolean checkWithinRange(Sensor sensor) 
@@ -17,6 +23,7 @@ public class Controller implements ControllerInterface{
         }
         else
         {
+            logger.logError(value + "is outside of valid range!");
             return false;
         }
         

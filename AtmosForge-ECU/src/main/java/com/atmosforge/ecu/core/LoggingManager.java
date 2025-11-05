@@ -42,4 +42,10 @@ public class LoggingManager implements LoggerInterface
     {
         System.out.println(timestamp() + " [DEBUG] " + message);
     }
+
+    // getter for logging manager
+    public static LoggerInterface getLogger() 
+    {
+        return new LoggingManager();
+    }
 }
