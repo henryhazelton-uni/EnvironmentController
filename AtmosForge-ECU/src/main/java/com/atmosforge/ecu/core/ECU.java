@@ -60,34 +60,17 @@ public class ECU {
         return humiditySensor;
     }
     
-    public TemperatureController getTemperatureController()
-    {
-        return temperatureController;
-    }
-
-    public PressureController getPressureController()
-    {
-        return pressureController;
-    }
-
-    public HumidityController geHumidityController()
-    {
-        return humidityController;
-    }
-
-    public TemperatureActuator getTemperatureActuator()
-    {
-        return temperatureActuator;
-    }
-
-    public PressureActuator getPressureActuator()
-    {
-        return pressureActuator;   
-    }
-
-    public HumidityActuator getHumidityActuator()
-    {
-        return humidityActuator;
+    public static void main(String[] args) {
+        System.out.println("Starting AtmosForge Environment Control Unit...");
+        //Later: initialize ECU modules or JavaFX app here
+        ECU ecu = new ECU();
+        //Set initial test values
+        ecu.getTemperatureSensor().setValue(25);
+        ecu.getPressureSensor().setValue(101);
+        ecu.getHumiditySensor().setValue(60);
+        DashboardControl.setEcu(ecu);
+        DashboardControl.main(args);
+    
     }
 
 }
