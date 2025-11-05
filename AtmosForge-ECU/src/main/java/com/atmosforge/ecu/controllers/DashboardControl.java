@@ -17,7 +17,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-public class DashboardControl extends Application {
+public class DashboardControl extends Application 
+{
+
+    private static VBox loggingPanelReference;
 
     //Static ECU reference (so main can set it before JavaFX launch)
     private static ECU ecu;
@@ -36,7 +39,7 @@ public class DashboardControl extends Application {
         Label title = new Label("Environment Control Unit");
         title.setStyle("-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;");
         topBar.getChildren().add(title);
-
+        
         //Side menu
         VBox sideMenu = new VBox(15);
         sideMenu.setPadding(new Insets(15));
@@ -79,9 +82,10 @@ public class DashboardControl extends Application {
 
         //Logging area
         VBox loggingPanel = new VBox();
+        loggingPanelReference = loggingPanel;
         loggingPanel.setPadding(new Insets(10));
         loggingPanel.setStyle("-fx-background-color: #bdc3c7;");
-        Label logLabel = new Label("Space for logging system");
+        Label logLabel = new Label("System Logs:");
         logLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #2c3e50;");
         loggingPanel.getChildren().add(logLabel);
         VBox.setVgrow(loggingPanel, Priority.ALWAYS);
@@ -120,6 +124,28 @@ public class DashboardControl extends Application {
 
         indicatorBox.getChildren().addAll(label, statusLight, valueLabel);
         return indicatorBox;
+    }
+
+    public static void addLogMessages(String message)
+    {
+
+        // Check if panel exists, if not return
+        if (loggingPanelReference == null)
+        {
+            return;
+        }
+
+        Label logEntry = new Label(message);
+        logEntry.setStyle("-fx-text-fill: #2c3e50; -fx-font-size: 12px;");
+
+        javafx.application.Platform.runLater(() -> {
+            loggingPanelReference.getChildren().add(logEntry);
+
+            // Add auto scrolling if logs overflow
+            if (loggingPanelReference.getChildren().size() > 100) {
+                loggingPanelReference.getChildren().remove(1);
+            }
+        });
     }
 
     public static void main(String[] args) {
