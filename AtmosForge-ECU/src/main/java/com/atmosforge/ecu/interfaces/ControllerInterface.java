@@ -1,5 +1,6 @@
 package com.atmosforge.ecu.interfaces;
 
+import com.atmosforge.ecu.abstracts.Actuator;
 import com.atmosforge.ecu.abstracts.Sensor;
 
 public interface ControllerInterface 
@@ -10,7 +11,7 @@ public interface ControllerInterface
     boolean checkWithinRange(Sensor sensor);
     
     //Alter the value using actuator
-    void alter();
+    void alter(Actuator actuator, Sensor sensor);
 
     //Log the current value of sensor variable when in an acceptable range.
     void informSystem();

@@ -4,5 +4,8 @@ import com.atmosforge.ecu.abstracts.Controller;
 
 public class HumidityController extends Controller
 {
-    public HumidityController(String name){} 
+    public HumidityController(String name)
+    {
+        super(name);
+    } 
 }

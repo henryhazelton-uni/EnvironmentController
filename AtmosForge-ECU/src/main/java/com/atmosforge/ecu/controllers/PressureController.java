@@ -4,5 +4,8 @@ import com.atmosforge.ecu.abstracts.Controller;
 
 public class PressureController extends Controller
 {
-    public PressureController(String name){}       
+    public PressureController(String name)
+    {
+        super(name);
+    }       
 }

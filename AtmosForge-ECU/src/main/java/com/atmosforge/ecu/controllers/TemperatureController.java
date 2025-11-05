@@ -4,5 +4,8 @@ import com.atmosforge.ecu.abstracts.Controller;
 
 public class TemperatureController extends Controller
 {   
-    public TemperatureController(String name){}
+    public TemperatureController(String name)
+    {
+        super(name);
+    }
 }

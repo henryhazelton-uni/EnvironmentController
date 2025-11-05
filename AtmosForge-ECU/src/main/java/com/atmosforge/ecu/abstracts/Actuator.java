@@ -4,8 +4,13 @@ import com.atmosforge.ecu.interfaces.ActuatorInterface;
 
 public class Actuator implements ActuatorInterface
 {
-
+    private String actuatorName;
     private boolean actuatorOn;
+
+    public Actuator(String name)
+    {
+        this.actuatorName = name;
+    }
 
     @Override
     public void activateActuator() 
@@ -85,4 +90,13 @@ public class Actuator implements ActuatorInterface
         sensor.setValue(newValue);
     }
     
+    public String getName()
+    {
+        return actuatorName;
+    }
+
+    public void setName(String name)
+    {
+        this.actuatorName = name;
+    }
 }

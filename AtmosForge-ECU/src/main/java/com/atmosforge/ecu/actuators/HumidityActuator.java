@@ -4,5 +4,8 @@ import com.atmosforge.ecu.abstracts.Actuator;
 
 public class HumidityActuator extends Actuator
 {
-    public HumidityActuator(String name){}
+    public HumidityActuator(String name)
+    {
+        super(name);
+    }
 }
