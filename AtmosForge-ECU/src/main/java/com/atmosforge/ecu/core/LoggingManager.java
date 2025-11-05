@@ -1,5 +1,6 @@
 package com.atmosforge.ecu.core;
 
+import com.atmosforge.ecu.controllers.DashboardControl;
 import com.atmosforge.ecu.interfaces.LoggerInterface;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,25 +23,25 @@ public class LoggingManager implements LoggerInterface
     @Override
     public void logInfo(String message) 
     {
-        System.out.println(timestamp() + " [INFO] " + message);
+        DashboardControl.addLogMessages(timestamp() + " [INFO] " + message);
     }
 
     @Override
     public void logWarning(String message) 
     {
-        System.out.println(timestamp() + " [WARNING] " + message);
+        DashboardControl.addLogMessages(timestamp() + " [WARNING] " + message);
     }
 
     @Override
     public void logError(String message) 
     {
-        System.err.println(timestamp() + " [ERROR] " + message);
+        DashboardControl.addLogMessages(timestamp() + " [ERROR] " + message);
     }
 
     @Override
     public void logDebug(String message) 
     {
-        System.out.println(timestamp() + " [DEBUG] " + message);
+        DashboardControl.addLogMessages(timestamp() + " [DEBUG] " + message);
     }
 
     // getter for logging manager
