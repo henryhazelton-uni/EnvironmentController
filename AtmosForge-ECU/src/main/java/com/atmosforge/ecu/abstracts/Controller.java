@@ -23,6 +23,7 @@ public class Controller implements ControllerInterface
         }
         else
         {
+            logger.logError(value + "is outside of valid range!");
             return false;
         }
         

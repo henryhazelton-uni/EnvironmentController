@@ -49,6 +49,7 @@ public class Sensor implements SensorInterface
     public void setValue(double value) 
     {
         this.value = value;
+        logger.logInfo(sensorName + "reading set to" + targetValue);
     }
 
     @Override
@@ -60,6 +61,7 @@ public class Sensor implements SensorInterface
     public void setName(String name) 
     {
         this.sensorName = name;
+        logger.logInfo("Name set to:" + name);
     }
 
     @Override
@@ -72,6 +74,7 @@ public class Sensor implements SensorInterface
     public void setTargetValue(double targetValue) 
     {
         this.targetValue = targetValue;
+        logger.logInfo(sensorName + "target set to: " + targetValue);
     }
 
     @Override
@@ -84,5 +87,6 @@ public class Sensor implements SensorInterface
     public void setTargetTolerance(double tolerance) 
     {
         this.targetTolerance = tolerance;
+        logger.logInfo(sensorName + "target tolerance set to" + tolerance);
     }
 }
