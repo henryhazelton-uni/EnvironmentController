@@ -6,13 +6,8 @@ import com.atmosforge.ecu.interfaces.LoggerInterface;
 
 public class PressureActuator extends Actuator
 {
-
-    // Initalise logger for pressure actuator
-    private static final LoggerInterface logger = LoggingManager.getLogger();
-
-    public PressureActuator()
+    public PressureActuator(String name)
     {
-        
+        super(name);
     }
-    
 }

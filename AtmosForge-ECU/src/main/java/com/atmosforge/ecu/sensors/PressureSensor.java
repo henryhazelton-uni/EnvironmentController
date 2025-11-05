@@ -10,7 +10,6 @@ public class PressureSensor extends Sensor
     private static final LoggerInterface logger = LoggingManager.getLogger();
 
     //Makes a new pressure sensor. 
-
     public PressureSensor(String name, double target, double tolerance)
     {
         super(name, target, tolerance);
