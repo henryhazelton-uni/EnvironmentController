@@ -40,7 +40,7 @@ public class Controller implements ControllerInterface
     {
         double value = sensor.getValue();
         
-        if (value <= sensor.getHighRange() || value >= sensor.getLowRange())
+        if (value <= sensor.getHighRange() && value >= sensor.getLowRange())
         {
             return true;
         }

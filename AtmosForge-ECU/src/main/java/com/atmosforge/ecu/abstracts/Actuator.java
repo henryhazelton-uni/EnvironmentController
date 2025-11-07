@@ -49,16 +49,24 @@ public class Actuator implements ActuatorInterface
             //If actuator isn't on, there should be no way to make changes.
             return;
         }
+        else if (currentValue == target)
+        {
+            //TODO: Log that we are at target and do nothing.
+
+            return;
+        }
         else if (currentValue < upperBound && currentValue > target)
         {
             //Within range, fine tune but check change will not go under target.
             if (currentValue - tolerance/10 >= target)
             {
+                //TODO: Log small adjustment
+                
                 newValue = currentValue - tolerance/10;
             }
             else
             {
-                //Either at target or within 1/10 tolerance of target, turn off actuator for now.
+                //Within 1/10 tolerance of target, turn off actuator for now.
                 return;
             }
         }
@@ -67,37 +75,51 @@ public class Actuator implements ActuatorInterface
             //Within range, fine tune but check change will not go over target.
             if (currentValue + tolerance/10 <= target)
             {
+                //TODO: Log small adjustment
+
                 newValue = currentValue + tolerance/10;
             } 
             else
             {
-                //Either at target or within 1/10 tolerance of target, do nothing. 
+                //Within 1/10 tolerance of target, do nothing. 
                 return;
             }
         }
         else if (currentValue == upperBound)
         {
             //Dashboard should show yellow and warn, then make adjustment.
+
+            //TODO: Logger logic here
             newValue = currentValue - tolerance/5;
         }
         else if (currentValue == lowerBound) 
         {
             //Dashboard should show yellow and warn, then make adjustment.
+
+            //TODO: Logger logic here
+
             newValue = currentValue + tolerance/5;
         }
         else if (currentValue > upperBound) 
         {
             //Dashboard should show red and error, then make adjustment.
-            newValue = currentValue + tolerance/2;
+
+            //TODO: Logger logic here
+
+            newValue = currentValue - tolerance/2;
         }
         else if (currentValue < lowerBound)
         {
             //Dashboard should show red and error, then make adjustment.
+
+            //TODO: Logger logic here
+
             newValue = currentValue + tolerance/2;
         }
 
         //Set new value on sensor.
         sensor.setValue(newValue);
+        //TODO: Logger logic here
     }
     
     public String getName()
