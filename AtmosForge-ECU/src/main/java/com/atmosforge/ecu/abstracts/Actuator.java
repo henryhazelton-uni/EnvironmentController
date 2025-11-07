@@ -4,6 +4,7 @@ import com.atmosforge.ecu.core.LoggingManager;
 import com.atmosforge.ecu.interfaces.ActuatorInterface;
 import com.atmosforge.ecu.interfaces.LoggerInterface;
 
+
 public class Actuator implements ActuatorInterface
 {
     // Initalise a logger for each actuator
