@@ -38,11 +38,6 @@ public class Actuator implements ActuatorInterface
         return actuatorOn;
     }
 
-    public boolean isActuatorActive()
-    {
-        return actuatorOn;
-    }
-
     @Override
     public void simulateValueChange(Sensor sensor) 
     {
@@ -73,8 +68,6 @@ public class Actuator implements ActuatorInterface
             //Within range, fine tune but check change will not go under target.
             if (currentValue - tolerance/10 >= target)
             {
-                //TODO: Log small adjustment
-                
                 newValue = currentValue - tolerance/10;
                 logger.logWarning("Approaching lower limit of " + target);
             }
@@ -90,8 +83,6 @@ public class Actuator implements ActuatorInterface
             //Within range, fine tune but check change will not go over target.
             if (currentValue + tolerance/10 <= target)
             {
-                //TODO: Log small adjustment
-
                 newValue = currentValue + tolerance/10;
                 logger.logInfo(actuatorName + "STATUS: On");
             } 
