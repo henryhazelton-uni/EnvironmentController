@@ -11,10 +11,28 @@ public class Controller implements ControllerInterface
     protected static final LoggerInterface logger = LoggingManager.getLogger();
 
     private String controllerName;
-
+    private boolean controllerOn;
+    
     public Controller(String name) 
     {
         this.controllerName = name;
+    }
+
+    @Override
+    public void activateController()
+    {
+        controllerOn = true;
+    }
+
+    @Override
+    public void deactivateController()
+    {
+        controllerOn = false;
+    }
+
+    public boolean isControllerActive()
+    {
+        return controllerOn;        
     }
 
     @Override
@@ -35,11 +53,10 @@ public class Controller implements ControllerInterface
     }
 
     @Override
-    public void alter(Actuator actuator, Sensor sensor) 
+    public void monitor(Actuator actuator, Sensor sensor) 
     {
         //Use actuators to change value towards target value.   
         actuator.simulateValueChange(sensor);
-
     }
 
     //Logger to inform the system we are in acceptable ranges and what the current value is.

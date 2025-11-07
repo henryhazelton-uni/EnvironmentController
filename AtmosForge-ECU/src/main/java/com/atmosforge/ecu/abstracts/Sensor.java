@@ -11,6 +11,7 @@ public class Sensor implements SensorInterface
     private double targetValue;
     private double targetTolerance;
     private double value;
+    private boolean sensorOn;
     
     // Initalise a logger for each sensor
     protected static final LoggerInterface logger = LoggingManager.getLogger();
@@ -23,6 +24,22 @@ public class Sensor implements SensorInterface
         this.targetTolerance = tolerance;
     }    
     
+    @Override
+    public void activateSensor()
+    {
+        sensorOn=true;
+    }
+    @Override
+    public void deactivateSensor()
+    {
+        sensorOn=false;
+    }
+
+    public boolean isSensorActive()
+    {
+        return sensorOn;
+    }
+
     //Calculates the lower boundary for the acceptable range.
     public double getLowRange()
     {
