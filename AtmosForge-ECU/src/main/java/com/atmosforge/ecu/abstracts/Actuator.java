@@ -2,6 +2,7 @@ package com.atmosforge.ecu.abstracts;
 
 import com.atmosforge.ecu.interfaces.ActuatorInterface;
 
+
 public class Actuator implements ActuatorInterface
 {
     private String actuatorName;

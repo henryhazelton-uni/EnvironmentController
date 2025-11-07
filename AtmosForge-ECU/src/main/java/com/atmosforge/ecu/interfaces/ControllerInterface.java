@@ -13,8 +13,8 @@ public interface ControllerInterface
     //Set controller as inactive
     void deactivateController();
 
-    //Check the value of the sensor's variable is within the acceptable range of the target value
-    boolean checkWithinRange(Sensor sensor);
+    //Check the value of the sensor's variable and log it appropriately
+    void checkSensor(Sensor sensor);
     
     //Monitor the value and make necessary changes.
     void monitor(Actuator actuator, Sensor sensor);

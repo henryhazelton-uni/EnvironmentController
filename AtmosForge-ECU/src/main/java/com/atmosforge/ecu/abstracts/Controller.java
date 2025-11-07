@@ -36,26 +36,48 @@ public class Controller implements ControllerInterface
     }
 
     @Override
-    public boolean checkWithinRange(Sensor sensor) 
+    public void checkSensor(Sensor sensor) 
     {
         double value = sensor.getValue();
-        
-        if (value <= sensor.getHighRange() && value >= sensor.getLowRange())
+        double target = sensor.getTargetValue();
+        double lowerBound = sensor.getLowRange();
+        double upperBound = sensor.getHighRange();
+        String sensorName = sensor.getName();
+
+        if (value == target)
+        {    
+            logger.logInfo(sensorName + " is eqaual to  target value: " + target);
+        }
+        else if (value == lowerBound)
         {
-            return true;
+            logger.logWarning(sensorName + " lower bound hit! Value: " + value);
+        }
+        else if (value == upperBound)
+        {
+            logger.logWarning(sensorName + " upper bound hit! Value: " + value);
+        }
+        else if (value > target && value < upperBound)
+        {
+            logger.logInfo(sensorName + " within range above target. Value: " + value);
+        }
+        else if(value < target && value > lowerBound)
+        {
+            logger.logInfo(sensorName + " within range below target. Value: " + value);
+        }
+        else if (value > upperBound)
+        {
+            logger.logError(sensorName + " above valid range! Value: " + value);
         }
         else
         {
-            logger.logError(value + "is outside of valid range!");
-            return false;
+            logger.logError(sensorName + " below valid range! Value: " + value);
         }
-        
     }
-
     @Override
     public void monitor(Actuator actuator, Sensor sensor) 
     {
         //Use actuators to change value towards target value.   
+        checkSensor(sensor);
         actuator.simulateValueChange(sensor);
     }
 
