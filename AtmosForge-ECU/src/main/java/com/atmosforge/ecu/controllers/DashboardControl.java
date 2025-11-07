@@ -5,6 +5,7 @@ import com.atmosforge.ecu.core.ECU;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -17,34 +18,34 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-public class DashboardControl extends Application 
-{
+
+public class DashboardControl extends Application {
 
     private static VBox loggingPanelReference;
 
-    //Static ECU reference (so main can set it before JavaFX launch)
+    // Static ECU reference (so main can set it before JavaFX launch)
     private static ECU ecu;
 
     private Label temperatureLabel;
     private Label pressureLabel;
     private Label humidityLabel;
 
-    //Setter method to assign ECU before launch
+    // Setter method to assign ECU before launch
     public static void setEcu(ECU ecuInstance) {
         ecu = ecuInstance;
     }
 
     @Override
     public void start(Stage primaryStage) {
-        //Top bar
+        // Top bar
         HBox topBar = new HBox();
         topBar.setPadding(new Insets(15));
         topBar.setStyle("-fx-background-color: #2c3e50;");
         Label title = new Label("Environment Control Unit");
         title.setStyle("-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;");
         topBar.getChildren().add(title);
-        
-        //Side menu
+
+        // Side menu
         VBox sideMenu = new VBox(15);
         sideMenu.setPadding(new Insets(15));
         sideMenu.setStyle("-fx-background-color: #34495e;");
@@ -53,51 +54,89 @@ public class DashboardControl extends Application
         Label testTitle = new Label("Test Controls");
         testTitle.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
 
-        //temperature
+        // Temperature
         Label tempLabel = new Label("Temperature (°C):");
         tempLabel.setStyle("-fx-text-fill: white;");
         TextField tempField = new TextField();
 
-        //pressure
+        // Pressure
         Label pressureLabelField = new Label("Pressure (kPa):");
         pressureLabelField.setStyle("-fx-text-fill: white;");
         TextField pressureField = new TextField();
 
-        //humidity
+        // Humidity
         Label humidityLabelField = new Label("Humidity (%):");
         humidityLabelField.setStyle("-fx-text-fill: white;");
         TextField humidityField = new TextField();
 
-        //apply changes button
+        // Apply changes button
         Button updateButton = new Button("Apply Changes");
         updateButton.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold;");
         updateButton.setMaxWidth(Double.MAX_VALUE);
 
-        //update logic
+        // Validation and update logic
         updateButton.setOnAction(e -> {
             try {
                 double newTemp = Double.parseDouble(tempField.getText());
                 double newPressure = Double.parseDouble(pressureField.getText());
                 double newHumidity = Double.parseDouble(humidityField.getText());
 
-                ecu.getTemperatureSensor().setValue(newTemp);
-                ecu.getPressureSensor().setValue(newPressure);
-                ecu.getHumiditySensor().setValue(newHumidity);
+                // Get ranges from sensors
+                double tempLow = ecu.getTemperatureSensor().getLowRange();
+                double tempHigh = ecu.getTemperatureSensor().getHighRange();
 
-                updateDashboardValues();
+                double pressureLow = ecu.getPressureSensor().getLowRange();
+                double pressureHigh = ecu.getPressureSensor().getHighRange();
+
+                double humidityLow = ecu.getHumiditySensor().getLowRange();
+                double humidityHigh = ecu.getHumiditySensor().getHighRange();
+
+                // Validate ranges
+                boolean tempValid = newTemp >= tempLow && newTemp <= tempHigh;
+                boolean pressureValid = newPressure >= pressureLow && newPressure <= pressureHigh;
+                boolean humidityValid = newHumidity >= humidityLow && newHumidity <= humidityHigh;
+
+                if (tempValid && pressureValid && humidityValid) {
+                    ecu.getTemperatureSensor().setValue(newTemp);
+                    ecu.getPressureSensor().setValue(newPressure);
+                    ecu.getHumiditySensor().setValue(newHumidity);
+                    updateDashboardValues();
+                    System.out.println("Values updated successfully.");
+                } else {
+                    StringBuilder errorMsg = new StringBuilder("Invalid input:\n");
+                    if (!tempValid) errorMsg.append("Temperature must be between ")
+                            .append(tempLow).append(" and ").append(tempHigh).append("\n");
+                    if (!pressureValid) errorMsg.append("Pressure must be between ")
+                            .append(pressureLow).append(" and ").append(pressureHigh).append("\n");
+                    if (!humidityValid) errorMsg.append("Humidity must be between ")
+                            .append(humidityLow).append(" and ").append(humidityHigh).append("\n");
+
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Validation Error");
+                    alert.setHeaderText("Invalid Values");
+                    alert.setContentText(errorMsg.toString());
+                    alert.showAndWait();
+                }
 
             } catch (NumberFormatException ex) {
-                System.out.println("Invalid input. Please enter numeric values.");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Input Error");
+                alert.setHeaderText("Invalid Input");
+                alert.setContentText("Please enter numeric values only.");
+                alert.showAndWait();
             }
         });
-        
+
+        // Add elements to side menu
         sideMenu.getChildren().addAll(
-            testTitle,
-            tempField, tempLabel,
-            pressureLabelField, pressureField,
-            humidityField, humidityLabelField,
-            updateButton
+                testTitle,
+                tempLabel, tempField,
+                pressureLabelField, pressureField,
+                humidityLabelField, humidityField,
+                updateButton
         );
+
+
 
         //Main content area
         VBox mainContent = new VBox(30);
