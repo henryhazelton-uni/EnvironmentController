@@ -49,7 +49,7 @@ public class Controller implements ControllerInterface
 
         if (value == target)
         {    
-            logger.logInfo(sensorName + " is eqaual to  target value: " + target);
+            logger.logInfo(sensorName + " is equal to  target value: " + target);
         }
         else if (value == lowerBound)
         {
