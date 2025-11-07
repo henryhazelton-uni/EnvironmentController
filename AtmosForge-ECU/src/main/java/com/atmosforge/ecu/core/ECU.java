@@ -28,6 +28,8 @@ public class ECU {
     private final PressureActuator pressureActuator;
     private final HumidityActuator humidityActuator;
 
+    private Thread ecuLoop;
+
     private boolean ecuActive;
 
     public ECU() {
@@ -51,23 +53,11 @@ public class ECU {
 
         //Later: initialize ECU modules or JavaFX app here
         ECU ecu = new ECU();
-        
-        ecu.activateECU();
-
-        //Set initial test values
-        //ecu.getTemperatureSensor().setValue(25);
-        //ecu.getPressureSensor().setValue(101);
-        //ecu.getHumiditySensor().setValue(60);
 
         DashboardControl.setEcu(ecu);
         DashboardControl.main(args);
 
-        while (ecu.ecuActive)
-        {
-        ecu.runSystem(ecu.getTemperatureSensor(), ecu.getTemperatureController(), ecu.getTemperatureActuator());
-        ecu.runSystem(ecu.getPressureSensor(), ecu.getPressureController(), ecu.getPressureActuator());
-        ecu.runSystem(ecu.getHumiditySensor(), ecu.geHumidityController(), ecu.getHumidityActuator());
-        }
+        
     }
 
     public void activateECU()
@@ -77,15 +67,45 @@ public class ECU {
         activateSystem(getTemperatureSensor(), getTemperatureController(), getTemperatureActuator());
         activateSystem(getPressureSensor(), getPressureController(), getPressureActuator());
         activateSystem(getHumiditySensor(), geHumidityController(), getHumidityActuator());
+
+        loopECU();
     }
 
     public void deactivateECU()
     {
+        ecuActive = false;
+
+        ecuLoop.interrupt();
+
         deactivateSystem(temperatureSensor, temperatureController, temperatureActuator);
         deactivateSystem(pressureSensor, pressureController, pressureActuator);
         deactivateSystem(humiditySensor, humidityController, humidityActuator);
 
-        ecuActive = false;
+        
+    }
+
+    public void loopECU()
+    {
+        ecuLoop = new Thread(() -> 
+        {
+            while (ecuActive)
+            {
+            runSystem(getTemperatureSensor(), getTemperatureController(), getTemperatureActuator());
+            runSystem(getPressureSensor(), getPressureController(), getPressureActuator());
+            runSystem(getHumiditySensor(), geHumidityController(), getHumidityActuator());
+
+            try 
+            {
+                Thread.sleep(1000);
+            } 
+            catch (InterruptedException e) 
+            {
+                //Logger
+            }
+            }
+        }, "ECU Loop");
+        
+        ecuLoop.start();
     }
 
     public void runSystem(Sensor sensor, Controller controller, Actuator actuator)
