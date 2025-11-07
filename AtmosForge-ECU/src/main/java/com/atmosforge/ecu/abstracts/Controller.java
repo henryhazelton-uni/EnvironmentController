@@ -30,6 +30,11 @@ public class Controller implements ControllerInterface
         controllerOn = false;
     }
 
+    public boolean isControllerActive()
+    {
+        return controllerOn;        
+    }
+
     @Override
     public boolean checkWithinRange(Sensor sensor) 
     {
