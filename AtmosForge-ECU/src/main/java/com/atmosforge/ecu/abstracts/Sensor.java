@@ -35,6 +35,11 @@ public class Sensor implements SensorInterface
         sensorOn=false;
     }
 
+    public boolean isSensorActive()
+    {
+        return sensorOn;
+    }
+
     //Calculates the lower boundary for the acceptable range.
     public double getLowRange()
     {

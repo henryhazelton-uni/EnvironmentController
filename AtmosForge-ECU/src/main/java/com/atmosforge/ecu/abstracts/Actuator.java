@@ -26,6 +26,11 @@ public class Actuator implements ActuatorInterface
         actuatorOn = false;
     }
 
+    public boolean isActuatorActive()
+    {
+        return actuatorOn;
+    }
+
     @Override
     public void simulateValueChange(Sensor sensor) 
     {
