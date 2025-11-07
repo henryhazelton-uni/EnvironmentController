@@ -202,11 +202,11 @@ public class DashboardControl extends Application
         logEntry.setStyle("-fx-text-fill: #2c3e50; -fx-font-size: 12px;");
 
         javafx.application.Platform.runLater(() -> {
-            loggingPanelReference.getChildren().add(logEntry);
+            loggingPanelReference.getChildren().add(1, logEntry);
 
             // Add auto scrolling if logs overflow
-            if (loggingPanelReference.getChildren().size() > 100) {
-                loggingPanelReference.getChildren().remove(1);
+            if (loggingPanelReference.getChildren().size() > 25) {
+                loggingPanelReference.getChildren().remove(9);
             }
         });
     }
