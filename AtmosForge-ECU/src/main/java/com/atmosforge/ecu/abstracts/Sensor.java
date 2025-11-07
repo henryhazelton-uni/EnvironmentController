@@ -49,7 +49,7 @@ public class Sensor implements SensorInterface
     public void setValue(double value) 
     {
         this.value = value;
-        logger.logInfo(sensorName + " reading set to " + targetValue);
+        logger.logInfo(sensorName + " reading set to " + value);
     }
 
     @Override
