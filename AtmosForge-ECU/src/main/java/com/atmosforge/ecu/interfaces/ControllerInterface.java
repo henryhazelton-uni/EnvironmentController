@@ -19,9 +19,4 @@ public interface ControllerInterface
     //Monitor the value and make necessary changes.
     void monitor(Actuator actuator, Sensor sensor);
 
-    //Log the current value of sensor variable when in an acceptable range.
-    void informSystem();
-
-    //Alert that the current value of sensor variable is not in the acceptable range and change is needed.
-    void alertSystem();
 }
