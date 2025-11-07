@@ -59,21 +59,6 @@ public class Controller implements ControllerInterface
         actuator.simulateValueChange(sensor);
     }
 
-    //Logger to inform the system we are in acceptable ranges and what the current value is.
-    @Override
-    public void informSystem()
-    {
-        //TODO Add code
-    }
-
-    //Logger to alert the system we are not in acceptable ranges and what the current value is.
-    @Override
-    public void alertSystem()
-    {
-        //TODO Add code
-    }
-    
-
     public String getName()
     {
         return controllerName;
