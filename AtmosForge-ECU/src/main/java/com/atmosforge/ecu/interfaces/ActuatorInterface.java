@@ -6,10 +6,10 @@ public interface ActuatorInterface
 {
     //Interface to provide structure for the actuators in the ECU. 
     
-    //Activate 
+    //Set actuator as active 
     void activateActuator();
 
-    //Deactivate 
+    //Set actuator as inactive 
     void deactivateActuator();
 
     //Simulate the change in value from the actuator for a sensor to read.
