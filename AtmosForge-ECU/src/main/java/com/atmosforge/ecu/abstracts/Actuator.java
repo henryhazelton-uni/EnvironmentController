@@ -59,7 +59,6 @@ public class Actuator implements ActuatorInterface
             else
             {
                 //Either at target or within 1/10 tolerance of target, turn off actuator for now.
-                deactivateActuator();
                 return;
             }
         }
@@ -72,8 +71,7 @@ public class Actuator implements ActuatorInterface
             } 
             else
             {
-                //Either at target or within 1/10 tolerance of target, do nothing.
-                deactivateActuator();
+                //Either at target or within 1/10 tolerance of target, do nothing. 
                 return;
             }
         }
