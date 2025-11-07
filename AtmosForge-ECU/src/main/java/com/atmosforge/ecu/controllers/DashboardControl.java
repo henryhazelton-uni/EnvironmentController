@@ -103,11 +103,42 @@ public class DashboardControl extends Application {
                 double newPressure = Double.parseDouble(pressureField.getText());
                 double newHumidity = Double.parseDouble(humidityField.getText());
 
-                ecu.getTemperatureSensor().setValue(newTemp);
-                ecu.getPressureSensor().setValue(newPressure);
-                ecu.getHumiditySensor().setValue(newHumidity);
+                // Get ranges from sensors
+                double tempLow = ecu.getTemperatureSensor().getLowRange();
+                double tempHigh = ecu.getTemperatureSensor().getHighRange();
 
-                updateDashboardValues();
+                double pressureLow = ecu.getPressureSensor().getLowRange();
+                double pressureHigh = ecu.getPressureSensor().getHighRange();
+
+                double humidityLow = ecu.getHumiditySensor().getLowRange();
+                double humidityHigh = ecu.getHumiditySensor().getHighRange();
+
+                // Validate ranges
+                boolean tempValid = newTemp >= tempLow && newTemp <= tempHigh;
+                boolean pressureValid = newPressure >= pressureLow && newPressure <= pressureHigh;
+                boolean humidityValid = newHumidity >= humidityLow && newHumidity <= humidityHigh;
+
+                if (tempValid && pressureValid && humidityValid) {
+                    ecu.getTemperatureSensor().setValue(newTemp);
+                    ecu.getPressureSensor().setValue(newPressure);
+                    ecu.getHumiditySensor().setValue(newHumidity);
+                    updateDashboardValues();
+                    System.out.println("Values updated successfully.");
+                } else {
+                    StringBuilder errorMsg = new StringBuilder("Invalid input:\n");
+                    if (!tempValid) errorMsg.append("Temperature must be between ")
+                            .append(tempLow).append(" and ").append(tempHigh).append("\n");
+                    if (!pressureValid) errorMsg.append("Pressure must be between ")
+                            .append(pressureLow).append(" and ").append(pressureHigh).append("\n");
+                    if (!humidityValid) errorMsg.append("Humidity must be between ")
+                            .append(humidityLow).append(" and ").append(humidityHigh).append("\n");
+
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Validation Error");
+                    alert.setHeaderText("Invalid Values");
+                    alert.setContentText(errorMsg.toString());
+                    alert.showAndWait();
+                }
 
             } catch (NumberFormatException ex) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -145,6 +176,8 @@ public class DashboardControl extends Application {
                 updateButton,
                 ecuControlButton
         );
+
+
 
         //Main content area
         VBox mainContent = new VBox(30);
