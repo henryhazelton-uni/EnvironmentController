@@ -23,21 +23,25 @@ public class DashboardControl extends Application {
 
     private static VBox loggingPanelReference;
 
-    // Static ECU reference (so main can set it before JavaFX launch)
     private static ECU ecu;
 
     private Label temperatureLabel;
     private Label pressureLabel;
     private Label humidityLabel;
 
-    // Setter method to assign ECU before launch
+    //lights for status
+    private Circle tempLight;
+    private Circle pressureLight;
+    private Circle humidityLight;
+
+    //Setter method to assign ECU before launch
     public static void setEcu(ECU ecuInstance) {
         ecu = ecuInstance;
     }
 
     @Override
     public void start(Stage primaryStage) {
-        // Top bar
+        //Top bar
         HBox topBar = new HBox();
         topBar.setPadding(new Insets(15));
         topBar.setStyle("-fx-background-color: #2c3e50;");
@@ -45,7 +49,7 @@ public class DashboardControl extends Application {
         title.setStyle("-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;");
         topBar.getChildren().add(title);
 
-        // Side menu
+        //Side menu
         VBox sideMenu = new VBox(15);
         sideMenu.setPadding(new Insets(15));
         sideMenu.setStyle("-fx-background-color: #34495e;");
@@ -54,69 +58,38 @@ public class DashboardControl extends Application {
         Label testTitle = new Label("Test Controls");
         testTitle.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
 
-        // Temperature
+        //Temperature input
         Label tempLabel = new Label("Temperature (°C):");
         tempLabel.setStyle("-fx-text-fill: white;");
         TextField tempField = new TextField();
 
-        // Pressure
+        //Pressure input
         Label pressureLabelField = new Label("Pressure (kPa):");
         pressureLabelField.setStyle("-fx-text-fill: white;");
         TextField pressureField = new TextField();
 
-        // Humidity
+        //Humidity input
         Label humidityLabelField = new Label("Humidity (%):");
         humidityLabelField.setStyle("-fx-text-fill: white;");
         TextField humidityField = new TextField();
 
-        // Apply changes button
+        //Apply changes button
         Button updateButton = new Button("Apply Changes");
         updateButton.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold;");
         updateButton.setMaxWidth(Double.MAX_VALUE);
 
-        // Validation and update logic
+        //Update logic
         updateButton.setOnAction(e -> {
             try {
                 double newTemp = Double.parseDouble(tempField.getText());
                 double newPressure = Double.parseDouble(pressureField.getText());
                 double newHumidity = Double.parseDouble(humidityField.getText());
 
-                // Get ranges from sensors
-                double tempLow = ecu.getTemperatureSensor().getLowRange();
-                double tempHigh = ecu.getTemperatureSensor().getHighRange();
+                ecu.getTemperatureSensor().setValue(newTemp);
+                ecu.getPressureSensor().setValue(newPressure);
+                ecu.getHumiditySensor().setValue(newHumidity);
 
-                double pressureLow = ecu.getPressureSensor().getLowRange();
-                double pressureHigh = ecu.getPressureSensor().getHighRange();
-
-                double humidityLow = ecu.getHumiditySensor().getLowRange();
-                double humidityHigh = ecu.getHumiditySensor().getHighRange();
-
-                // Validate ranges
-                boolean tempValid = newTemp >= tempLow && newTemp <= tempHigh;
-                boolean pressureValid = newPressure >= pressureLow && newPressure <= pressureHigh;
-                boolean humidityValid = newHumidity >= humidityLow && newHumidity <= humidityHigh;
-
-                if (tempValid && pressureValid && humidityValid) {
-                    ecu.getTemperatureSensor().setValue(newTemp);
-                    ecu.getPressureSensor().setValue(newPressure);
-                    ecu.getHumiditySensor().setValue(newHumidity);
-                    updateDashboardValues();
-                    System.out.println("Values updated successfully.");
-                } else {
-                    StringBuilder errorMsg = new StringBuilder("Invalid input:\n");
-                    if (!tempValid) errorMsg.append("Temperature must be between ")
-                            .append(tempLow).append(" and ").append(tempHigh).append("\n");
-                    if (!pressureValid) errorMsg.append("Pressure must be between ")
-                            .append(pressureLow).append(" and ").append(pressureHigh).append("\n");
-                    if (!humidityValid) errorMsg.append("Humidity must be between ")
-                            .append(humidityLow).append(" and ").append(humidityHigh).append("\n");
-
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Validation Error");
-                    alert.setHeaderText("Invalid Values");
-                    alert.setContentText(errorMsg.toString());
-                    alert.showAndWait();
-                }
+                updateDashboardValues();
 
             } catch (NumberFormatException ex) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -127,7 +100,6 @@ public class DashboardControl extends Application {
             }
         });
 
-        // Add elements to side menu
         sideMenu.getChildren().addAll(
                 testTitle,
                 tempLabel, tempField,
@@ -135,8 +107,6 @@ public class DashboardControl extends Application {
                 humidityLabelField, humidityField,
                 updateButton
         );
-
-
 
         //Main content area
         VBox mainContent = new VBox(30);
@@ -154,43 +124,40 @@ public class DashboardControl extends Application {
         statusRow.setStyle("-fx-background-color: #ecf0f1;");
         statusRow.setPrefHeight(Region.USE_COMPUTED_SIZE);
 
-        //temp box
+        //Temperature box
         VBox tempBox = new VBox(10);
         tempBox.setPadding(new Insets(10));
         tempBox.setStyle("-fx-alignment: center;");
         Label tempTitle = new Label("Temperature");
         tempTitle.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-        Circle tempLight = new Circle(14, Color.web("#2ecc71"));
+        tempLight = new Circle(14, Color.web("#2ecc71"));
         temperatureLabel = new Label(String.format("%.1f°C", ecu.getTemperatureSensor().getValue()));
         temperatureLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #7f8c8d;");
         tempBox.getChildren().addAll(tempTitle, tempLight, temperatureLabel);
 
-        //pressure box
+        //Pressure box
         VBox pressureBox = new VBox(10);
         pressureBox.setPadding(new Insets(10));
         pressureBox.setStyle("-fx-alignment: center;");
         Label pressureTitle = new Label("Pressure");
         pressureTitle.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-        Circle pressureLight = new Circle(14, Color.web("#f1c40f"));
+        pressureLight = new Circle(14, Color.web("#f1c40f"));
         pressureLabel = new Label(String.format("%.1f kPa", ecu.getPressureSensor().getValue()));
         pressureLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #7f8c8d;");
         pressureBox.getChildren().addAll(pressureTitle, pressureLight, pressureLabel);
 
-        //humidity box
+        //Humidity box
         VBox humidityBox = new VBox(10);
         humidityBox.setPadding(new Insets(10));
         humidityBox.setStyle("-fx-alignment: center;");
         Label humidityTitle = new Label("Humidity");
         humidityTitle.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-        Circle humidityLight = new Circle(14, Color.web("#e74c3c"));
+        humidityLight = new Circle(14, Color.web("#e74c3c"));
         humidityLabel = new Label(String.format("%.1f%%", ecu.getHumiditySensor().getValue()));
         humidityLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #7f8c8d;");
         humidityBox.getChildren().addAll(humidityTitle, humidityLight, humidityLabel);
 
-        //Add all indicators to the row
         statusRow.getChildren().addAll(tempBox, pressureBox, humidityBox);
-
-
         mainContent.getChildren().add(statusRow);
 
         //Logging area
@@ -223,15 +190,45 @@ public class DashboardControl extends Application {
             return;
         }
 
+        //Update text values
         temperatureLabel.setText(String.format("%.1f°C", ecu.getTemperatureSensor().getValue()));
         pressureLabel.setText(String.format("%.1f kPa", ecu.getPressureSensor().getValue()));
         humidityLabel.setText(String.format("%.1f%%", ecu.getHumiditySensor().getValue()));
+
+        //Get sensor values and ranges
+        double tempValue = ecu.getTemperatureSensor().getValue();
+        double tempLow = ecu.getTemperatureSensor().getLowRange();
+        double tempHigh = ecu.getTemperatureSensor().getHighRange();
+
+        double pressureValue = ecu.getPressureSensor().getValue();
+        double pressureLow = ecu.getPressureSensor().getLowRange();
+        double pressureHigh = ecu.getPressureSensor().getHighRange();
+
+        double humidityValue = ecu.getHumiditySensor().getValue();
+        double humidityLow = ecu.getHumiditySensor().getLowRange();
+        double humidityHigh = ecu.getHumiditySensor().getHighRange();
+
+        //Update colors based on validity
+        updateIndicatorColor(tempLight, tempValue, tempLow, tempHigh);
+        updateIndicatorColor(pressureLight, pressureValue, pressureLow, pressureHigh);
+        updateIndicatorColor(humidityLight, humidityValue, humidityLow, humidityHigh);
     }
+
+    private void updateIndicatorColor(Circle indicator, double value, double low, double high) {
+        if (value < low || value > high) {
+            indicator.setFill(Color.web("#e74c3c"));
+        } else if (value == low || value == high) {
+            indicator.setFill(Color.web("#f1c40f"));
+        } else {
+            indicator.setFill(Color.web("#2ecc71"));
+        }
+    }
+
 
     public static void addLogMessages(String message)
     {
 
-        // Check if panel exists, if not return
+        //Check if panel exists, if not return
         if (loggingPanelReference == null)
         {
             return;
@@ -243,7 +240,7 @@ public class DashboardControl extends Application {
         javafx.application.Platform.runLater(() -> {
             loggingPanelReference.getChildren().add(logEntry);
 
-            // Add auto scrolling if logs overflow
+            //Add auto scrolling if logs overflow
             if (loggingPanelReference.getChildren().size() > 100) {
                 loggingPanelReference.getChildren().remove(1);
             }
