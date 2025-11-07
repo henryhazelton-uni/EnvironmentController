@@ -1,10 +1,15 @@
 package com.atmosforge.ecu.abstracts;
 
+import com.atmosforge.ecu.core.LoggingManager;
 import com.atmosforge.ecu.interfaces.ActuatorInterface;
+import com.atmosforge.ecu.interfaces.LoggerInterface;
 
 
 public class Actuator implements ActuatorInterface
 {
+    // Initalise a logger for each actuator
+    protected static final LoggerInterface logger = LoggingManager.getLogger();
+
     private String actuatorName;
     private boolean actuatorOn;
 
@@ -18,6 +23,7 @@ public class Actuator implements ActuatorInterface
     {
         //Add logging and dashboard interactions to show Actuator is active.
         actuatorOn = true;
+        logger.logInfo(actuatorName + " STATUS: Active");
     }
 
     @Override
@@ -25,6 +31,7 @@ public class Actuator implements ActuatorInterface
     {
         //Add logging and dashboard interactions to show Actuator is inactive.
         actuatorOn = false;
+        logger.logInfo(actuatorName + " STATUS: Inactive");
     }
 
     public boolean isActuatorActive()
@@ -52,7 +59,8 @@ public class Actuator implements ActuatorInterface
         }
         else if (currentValue == target)
         {
-            //TODO: Log that we are at target and do nothing.
+            // Log that we are at target and do nothing
+            logger.logInfo(sensor + " is at selected target");
 
             return;
         }
@@ -61,13 +69,13 @@ public class Actuator implements ActuatorInterface
             //Within range, fine tune but check change will not go under target.
             if (currentValue - tolerance/10 >= target)
             {
-                //TODO: Log small adjustment
-                
                 newValue = currentValue - tolerance/10;
+                logger.logWarning("Approaching lower limit of " + target);
             }
             else
             {
                 //Within 1/10 tolerance of target, turn off actuator for now.
+                logger.logInfo(actuatorName + "STATUS: Off");
                 return;
             }
         }
@@ -76,9 +84,8 @@ public class Actuator implements ActuatorInterface
             //Within range, fine tune but check change will not go over target.
             if (currentValue + tolerance/10 <= target)
             {
-                //TODO: Log small adjustment
-
                 newValue = currentValue + tolerance/10;
+                logger.logInfo(actuatorName + "STATUS: On");
             } 
             else
             {
@@ -89,38 +96,31 @@ public class Actuator implements ActuatorInterface
         else if (currentValue == upperBound)
         {
             //Dashboard should show yellow and warn, then make adjustment.
-
-            //TODO: Logger logic here
             newValue = currentValue - tolerance/5;
+            logger.logWarning(sensor + " Approaching Upper Limit");
         }
         else if (currentValue == lowerBound) 
         {
             //Dashboard should show yellow and warn, then make adjustment.
-
-            //TODO: Logger logic here
-
             newValue = currentValue + tolerance/5;
+            logger.logWarning(sensor + " Approaching Lower Limit");
         }
         else if (currentValue > upperBound) 
         {
             //Dashboard should show red and error, then make adjustment.
-
-            //TODO: Logger logic here
-
             newValue = currentValue - tolerance/2;
+            logger.logError(sensor + " BREACHED Upper Bound - ACT IMMEDIATLEY");
         }
         else if (currentValue < lowerBound)
         {
             //Dashboard should show red and error, then make adjustment.
-
-            //TODO: Logger logic here
-
             newValue = currentValue + tolerance/2;
+            logger.logError(sensor + " BREACHED Lower Bound - ACT IMMEDIATLEY");
         }
 
         //Set new value on sensor.
         sensor.setValue(newValue);
-        //TODO: Logger logic here
+        logger.logInfo(sensor + " set value to " + newValue);
     }
     
     public String getName()
