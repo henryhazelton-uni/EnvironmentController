@@ -21,17 +21,20 @@ public class Controller implements ControllerInterface
     @Override
     public void activateController()
     {
+        logger.logInfo(controllerName + " activated");
         controllerOn = true;
     }
 
     @Override
     public void deactivateController()
     {
+        logger.logInfo(controllerName + " is inactive");
         controllerOn = false;
     }
 
     public boolean isControllerActive()
     {
+        logger.logInfo(controllerName + " is active");
         return controllerOn;        
     }
 
@@ -42,6 +45,7 @@ public class Controller implements ControllerInterface
         
         if (value <= sensor.getHighRange() && value >= sensor.getLowRange())
         {
+            logger.logInfo(sensor + " within range");
             return true;
         }
         else
