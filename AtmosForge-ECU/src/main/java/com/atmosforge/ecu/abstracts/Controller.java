@@ -21,23 +21,32 @@ public class Controller implements ControllerInterface
     @Override
     public void activateController()
     {
+        logger.logInfo(controllerName + " activated");
         controllerOn = true;
     }
 
     @Override
     public void deactivateController()
     {
+        logger.logInfo(controllerName + " is inactive");
         controllerOn = false;
     }
 
     public boolean isControllerActive()
     {
+        logger.logInfo(controllerName + " is active");
         return controllerOn;        
     }
 
     @Override
     public void checkSensor(Sensor sensor) 
     {
+        if(!sensor.isSensorActive())
+        {
+            logger.logError(sensor.getName() + " is currently inactive.");
+            return;
+        }
+
         double value = sensor.getValue();
         double target = sensor.getTargetValue();
         double lowerBound = sensor.getLowRange();
@@ -77,9 +86,17 @@ public class Controller implements ControllerInterface
     @Override
     public void monitor(Actuator actuator, Sensor sensor) 
     {
+        if (!isControllerActive())
+        {
+            logger.logError(controllerName + " is currently inactive.");
+            return;
+        }
+        else
+        {
         //Use actuators to change value towards target value.   
         checkSensor(sensor);
         actuator.simulateValueChange(sensor);
+        }
     }
 
     public String getName()
