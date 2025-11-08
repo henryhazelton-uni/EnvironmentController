@@ -21,20 +21,19 @@ public class Controller implements ControllerInterface
     @Override
     public void activateController()
     {
-        logger.logInfo(controllerName + " activated");
+        logger.logInfo(controllerName + " STATUS: Active");
         controllerOn = true;
     }
 
     @Override
     public void deactivateController()
     {
-        logger.logInfo(controllerName + " is inactive");
+        logger.logInfo(controllerName + " STATUS: Inactive");
         controllerOn = false;
     }
 
     public boolean isControllerActive()
     {
-        logger.logInfo(controllerName + " is active");
         return controllerOn;        
     }
 
