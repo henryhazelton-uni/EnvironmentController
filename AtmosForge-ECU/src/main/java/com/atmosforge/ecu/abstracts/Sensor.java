@@ -28,12 +28,16 @@ public class Sensor implements SensorInterface
     public void activateSensor()
     {
         sensorOn=true;
+        logger.logInfo(sensorName + " STATUS: Active");
     }
+    
     @Override
     public void deactivateSensor()
     {
         sensorOn=false;
+        logger.logInfo(sensorName + " STATUS: Inactive");
     }
+    
 
     public boolean isSensorActive()
     {
@@ -59,14 +63,30 @@ public class Sensor implements SensorInterface
     @Override
     public double getValue() 
     {
-        return value;
+        if (!isSensorActive())
+        {
+            logger.logError(sensorName + " is currently inactive.");
+            return 0;
+        }
+        else
+        {
+            logger.logInfo(sensorName + " current value: " + value);
+            return value;
+        }
     }
 
     @Override
     public void setValue(double value) 
     {
-        this.value = value;
-        logger.logInfo(sensorName + " reading set to " + value);
+        if (!isSensorActive())
+        {
+            logger.logError(sensorName + " is currently inactive.");
+        }
+        else
+        {
+            this.value = value;
+            logger.logInfo(sensorName + " reading set to " + value);
+        }
     }
 
     @Override

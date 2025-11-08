@@ -52,12 +52,18 @@ public class Actuator implements ActuatorInterface
         double lowerBound = sensor.getLowRange();
         double upperBound = sensor.getHighRange();
         
-        if(!actuatorOn)
+        if(!isActuatorActive())
         {
-            //If actuator isn't on, there should be no way to make changes.
+            logger.logError(actuatorName + " is currently inactive.");
             return;
         }
-        else if (currentValue == target)
+        if (!sensor.isSensorActive())
+        {
+            logger.logError(sensor.getName() + " is currently inactive.");
+            return;
+        }
+
+        if (currentValue == target)
         {
             return;
         }
@@ -93,25 +99,25 @@ public class Actuator implements ActuatorInterface
         {
             //Dashboard should show yellow and warn, then make adjustment.
             newValue = currentValue - tolerance/5;
-            logger.logWarning(sensor + " At Upper Limit" + " Adjusting to New Value: " + newValue);
+            logger.logWarning(sensor.getName() + " At Upper Limit" + " Adjusting to New Value: " + newValue);
         }
         else if (currentValue == lowerBound) 
         {
             //Dashboard should show yellow and warn, then make adjustment.
             newValue = currentValue + tolerance/5;
-            logger.logWarning(sensor + " At Lower Limit" + " Adjusting to New Value: " + newValue);
+            logger.logWarning(sensor.getName() + " At Lower Limit" + " Adjusting to New Value: " + newValue);
         }
         else if (currentValue > upperBound) 
         {
             //Dashboard should show red and error, then make adjustment.
             newValue = currentValue - tolerance/2;
-            logger.logError(sensor + " BREACHED Upper Bound - Attempting to Correct. New Value: " + newValue);
+            logger.logError(sensor.getName() + " BREACHED Upper Bound - Attempting to Correct. New Value: " + newValue);
         }
         else if (currentValue < lowerBound)
         {
             //Dashboard should show red and error, then make adjustment.
             newValue = currentValue + tolerance/2;
-            logger.logError(sensor + " BREACHED Lower Bound - Attempting to Correct. New Value: " + newValue);
+            logger.logError(sensor.getName() + " BREACHED Lower Bound - Attempting to Correct. New Value: " + newValue);
         }
 
         //Set new value on sensor.
