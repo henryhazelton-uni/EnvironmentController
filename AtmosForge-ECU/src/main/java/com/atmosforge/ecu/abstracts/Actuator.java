@@ -1,17 +1,12 @@
 package com.atmosforge.ecu.abstracts;
 
 import com.atmosforge.ecu.core.LoggingManager;
-import com.atmosforge.ecu.core.LoggingManager;
 import com.atmosforge.ecu.interfaces.ActuatorInterface;
-import com.atmosforge.ecu.interfaces.LoggerInterface;
 import com.atmosforge.ecu.interfaces.LoggerInterface;
 
 
 public class Actuator implements ActuatorInterface
 {
-    // Initalise a logger for each actuator
-    protected static final LoggerInterface logger = LoggingManager.getLogger();
-
     // Initalise a logger for each actuator
     protected static final LoggerInterface logger = LoggingManager.getLogger();
 
@@ -29,7 +24,6 @@ public class Actuator implements ActuatorInterface
         //Add logging and dashboard interactions to show Actuator is active.
         actuatorOn = true;
         logger.logInfo(actuatorName + " STATUS: Active");
-        logger.logInfo(actuatorName + " STATUS: Active");
     }
 
     @Override
@@ -37,7 +31,6 @@ public class Actuator implements ActuatorInterface
     {
         //Add logging and dashboard interactions to show Actuator is inactive.
         actuatorOn = false;
-        logger.logInfo(actuatorName + " STATUS: Inactive");
         logger.logInfo(actuatorName + " STATUS: Inactive");
     }
 
@@ -74,8 +67,6 @@ public class Actuator implements ActuatorInterface
         {
             // Log that we are at target and do nothing
             logger.logInfo(sensor + " is at selected target");
-            // Log that we are at target and do nothing
-            logger.logInfo(sensor + " is at selected target");
 
             return;
         }
@@ -85,7 +76,6 @@ public class Actuator implements ActuatorInterface
             if (currentValue - tolerance/10 >= target)
             {
                 newValue = currentValue - tolerance/10;
-                logger.logWarning("Approaching lower limit of " + target);
                 logger.logWarning("Approaching lower limit of " + target);
             }
             else
@@ -113,13 +103,11 @@ public class Actuator implements ActuatorInterface
             //Dashboard should show yellow and warn, then make adjustment.
             newValue = currentValue - tolerance/5;
             logger.logWarning(sensor + " Approaching Upper Limit");
-            logger.logWarning(sensor + " Approaching Upper Limit");
         }
         else if (currentValue == lowerBound) 
         {
             //Dashboard should show yellow and warn, then make adjustment.
             newValue = currentValue + tolerance/5;
-            logger.logWarning(sensor + " Approaching Lower Limit");
             logger.logWarning(sensor + " Approaching Lower Limit");
         }
         else if (currentValue > upperBound) 
@@ -127,19 +115,16 @@ public class Actuator implements ActuatorInterface
             //Dashboard should show red and error, then make adjustment.
             newValue = currentValue - tolerance/2;
             logger.logError(sensor + " BREACHED Upper Bound - ACT IMMEDIATLEY");
-            logger.logError(sensor + " BREACHED Upper Bound - ACT IMMEDIATLEY");
         }
         else if (currentValue < lowerBound)
         {
             //Dashboard should show red and error, then make adjustment.
             newValue = currentValue + tolerance/2;
             logger.logError(sensor + " BREACHED Lower Bound - ACT IMMEDIATLEY");
-            logger.logError(sensor + " BREACHED Lower Bound - ACT IMMEDIATLEY");
         }
 
         //Set new value on sensor.
         sensor.setValue(newValue);
-        logger.logInfo(sensor + " set value to " + newValue);
         logger.logInfo(sensor + " set value to " + newValue);
     }
     
