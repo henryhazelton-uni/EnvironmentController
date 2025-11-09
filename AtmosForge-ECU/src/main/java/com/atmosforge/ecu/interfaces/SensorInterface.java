@@ -4,6 +4,12 @@ public interface SensorInterface
 {
     //Interface to provide structure for sensors in the ECU.
 
+    //Set sensor as active
+    void activateSensor();
+
+    //Set sensor as inactive
+    void deactivateSensor();
+
     //For controller to get the name of the sensor
     String getName();
 

@@ -1,9 +1,15 @@
 package com.atmosforge.ecu.abstracts;
 
+import com.atmosforge.ecu.core.LoggingManager;
 import com.atmosforge.ecu.interfaces.ActuatorInterface;
+import com.atmosforge.ecu.interfaces.LoggerInterface;
+
 
 public class Actuator implements ActuatorInterface
 {
+    // Initalise a logger for each actuator
+    protected static final LoggerInterface logger = LoggingManager.getLogger();
+
     private String actuatorName;
     private boolean actuatorOn;
 
@@ -17,6 +23,7 @@ public class Actuator implements ActuatorInterface
     {
         //Add logging and dashboard interactions to show Actuator is active.
         actuatorOn = true;
+        logger.logInfo(actuatorName + " STATUS: Active");
     }
 
     @Override
@@ -24,69 +31,96 @@ public class Actuator implements ActuatorInterface
     {
         //Add logging and dashboard interactions to show Actuator is inactive.
         actuatorOn = false;
+        logger.logInfo(actuatorName + " STATUS: Inactive");
+    }
+
+    public boolean isActuatorActive()
+    {
+        return actuatorOn;
     }
 
     @Override
     public void simulateValueChange(Sensor sensor) 
     {
-        //Initiate new value
+        //New value this will set for the sensor
         double newValue = sensor.getValue();
-
-        if (actuatorOn && sensor.getValue() <= sensor.getHighRange() && sensor.getValue() > sensor.getTargetValue())
-        {
-            //If sensor reading is within the acceptable range on the high side, make small additions to the value.
-
-            //Firstly check making a small addition will not take it over target tolerance
-
-            if (sensor.getValue() + sensor.getTargetTolerance()/10 <= sensor.getTargetValue())
-            {
-                //Making the addition will not take it over target, so do it. 
-                newValue = sensor.getValue() + sensor.getTargetTolerance()/10;
-            }
-            else
-            {
-                // Sensor value must be within 1/10 tolerance of the target value, so do nothing.
-            }
-        }
-
-        else if (actuatorOn && sensor.getValue() >= sensor.getLowRange() && sensor.getValue() < sensor.getTargetValue())
-        {
-            //If sensor reading is wihtin acceptable range on the low side, , make small subtractions from the value
-
-            //Firstly check making a small subtraction will not take it below target tolerance
-
-            if (sensor.getValue() - sensor.getTargetTolerance()/10 >= sensor.getTargetValue())
-            {
-                //Making the subtraction will not take it below target, so do it.
-                newValue = sensor.getValue() - sensor.getTargetTolerance()/10;
-            }
-            else
-            {
-                // Sensor value must be within 1/10 tolerance of the target value, so do nothing.
-            }
-        }
-
-        else if (actuatorOn && sensor.getValue() < sensor.getLowRange())
-        {
-            //If sensor reading is below the low acceptable range, make large additions to the value
-
-            newValue = sensor.getValue() + sensor.getTargetTolerance()/2;
-
-        }
-
-        else if (actuatorOn && sensor.getValue() > sensor.getHighRange())
-        {
-            //If sensor reading is above the high acceptable range, make large subtractions from the value
-
-            newValue = sensor.getValue() - sensor.getTargetTolerance()/2;
-
-        }
-
-        else 
-        {
-            //Sensor will be at target, do nothing for now.
-        }
         
+        //Current sensor values to make calculations
+        double currentValue=sensor.getValue();
+        double target = sensor.getTargetValue();
+        double tolerance = sensor.getTargetTolerance();
+        double lowerBound = sensor.getLowRange();
+        double upperBound = sensor.getHighRange();
+        
+        if(!isActuatorActive())
+        {
+            logger.logError(actuatorName + " is currently inactive.");
+            return;
+        }
+        if (!sensor.isSensorActive())
+        {
+            logger.logError(sensor.getName() + " is currently inactive.");
+            return;
+        }
+
+        if (currentValue == target)
+        {
+            return;
+        }
+        else if (currentValue < upperBound && currentValue > target)
+        {
+            //Within range, fine tune but check change will not go under target.
+            if (currentValue - tolerance/10 >= target)
+            {
+                newValue = currentValue - tolerance/10;
+                logger.logWarning("Small adjustment towards " + target + " New value set to: " + newValue);
+            }
+            else
+            {
+                //Within 1/10 tolerance of target.
+                return;
+            }
+        }
+        else if (currentValue > lowerBound && currentValue < target) 
+        {
+            //Within range, fine tune but check change will not go over target.
+            if (currentValue + tolerance/10 <= target)
+            {
+                newValue = currentValue + tolerance/10;
+                logger.logWarning("Small adjustment towards " + target + " New value set to: " + newValue);
+            } 
+            else
+            {
+                //Within 1/10 tolerance of target.
+                return;
+            }
+        }
+        else if (currentValue == upperBound)
+        {
+            //Dashboard should show yellow and warn, then make adjustment.
+            newValue = currentValue - tolerance/5;
+            logger.logWarning(sensor.getName() + " At Upper Limit" + " Adjusting to New Value: " + newValue);
+        }
+        else if (currentValue == lowerBound) 
+        {
+            //Dashboard should show yellow and warn, then make adjustment.
+            newValue = currentValue + tolerance/5;
+            logger.logWarning(sensor.getName() + " At Lower Limit" + " Adjusting to New Value: " + newValue);
+        }
+        else if (currentValue > upperBound) 
+        {
+            //Dashboard should show red and error, then make adjustment.
+            newValue = currentValue - tolerance/2;
+            logger.logError(sensor.getName() + " BREACHED Upper Bound - Attempting to Correct. New Value: " + newValue);
+        }
+        else if (currentValue < lowerBound)
+        {
+            //Dashboard should show red and error, then make adjustment.
+            newValue = currentValue + tolerance/2;
+            logger.logError(sensor.getName() + " BREACHED Lower Bound - Attempting to Correct. New Value: " + newValue);
+        }
+
+        //Set new value on sensor.
         sensor.setValue(newValue);
     }
     

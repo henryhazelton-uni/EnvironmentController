@@ -11,6 +11,7 @@ public class Sensor implements SensorInterface
     private double targetValue;
     private double targetTolerance;
     private double value;
+    private boolean sensorOn;
     
     // Initalise a logger for each sensor
     protected static final LoggerInterface logger = LoggingManager.getLogger();
@@ -23,6 +24,26 @@ public class Sensor implements SensorInterface
         this.targetTolerance = tolerance;
     }    
     
+    @Override
+    public void activateSensor()
+    {
+        sensorOn=true;
+        logger.logInfo(sensorName + " STATUS: Active");
+    }
+    
+    @Override
+    public void deactivateSensor()
+    {
+        sensorOn=false;
+        logger.logInfo(sensorName + " STATUS: Inactive");
+    }
+    
+
+    public boolean isSensorActive()
+    {
+        return sensorOn;
+    }
+
     //Calculates the lower boundary for the acceptable range.
     public double getLowRange()
     {
@@ -42,14 +63,30 @@ public class Sensor implements SensorInterface
     @Override
     public double getValue() 
     {
-        return value;
+        if (!isSensorActive())
+        {
+            logger.logError(sensorName + " is currently inactive.");
+            return 0;
+        }
+        else
+        {
+            logger.logInfo(sensorName + " current value: " + value);
+            return value;
+        }
     }
 
     @Override
     public void setValue(double value) 
     {
-        this.value = value;
-        logger.logInfo(sensorName + "reading set to" + targetValue);
+        if (!isSensorActive())
+        {
+            logger.logError(sensorName + " is currently inactive.");
+        }
+        else
+        {
+            this.value = value;
+            logger.logInfo(sensorName + " reading set to " + value);
+        }
     }
 
     @Override
@@ -74,7 +111,7 @@ public class Sensor implements SensorInterface
     public void setTargetValue(double targetValue) 
     {
         this.targetValue = targetValue;
-        logger.logInfo(sensorName + "target set to: " + targetValue);
+        logger.logInfo(sensorName + " target set to: " + targetValue);
     }
 
     @Override
@@ -87,6 +124,6 @@ public class Sensor implements SensorInterface
     public void setTargetTolerance(double tolerance) 
     {
         this.targetTolerance = tolerance;
-        logger.logInfo(sensorName + "target tolerance set to" + tolerance);
+        logger.logInfo(sensorName + " target tolerance set to " + tolerance);
     }
 }

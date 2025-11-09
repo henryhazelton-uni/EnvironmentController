@@ -11,51 +11,92 @@ public class Controller implements ControllerInterface
     protected static final LoggerInterface logger = LoggingManager.getLogger();
 
     private String controllerName;
-
+    private boolean controllerOn;
+    
     public Controller(String name) 
     {
         this.controllerName = name;
     }
 
     @Override
-    public boolean checkWithinRange(Sensor sensor) 
+    public void activateController()
     {
-        double value = sensor.getValue();
-        
-        if (value <= sensor.getHighRange() || value >= sensor.getLowRange())
+        logger.logInfo(controllerName + " STATUS: Active");
+        controllerOn = true;
+    }
+
+    @Override
+    public void deactivateController()
+    {
+        logger.logInfo(controllerName + " STATUS: Inactive");
+        controllerOn = false;
+    }
+
+    public boolean isControllerActive()
+    {
+        return controllerOn;        
+    }
+
+    @Override
+    public void checkSensor(Sensor sensor) 
+    {
+        if(!sensor.isSensorActive())
         {
-            return true;
+            logger.logError(sensor.getName() + " is currently inactive.");
+            return;
+        }
+
+        double value = sensor.getValue();
+        double target = sensor.getTargetValue();
+        double lowerBound = sensor.getLowRange();
+        double upperBound = sensor.getHighRange();
+        String sensorName = sensor.getName();
+
+        if (value == target)
+        {    
+            logger.logInfo(sensorName + " is equal to  target value: " + target);
+        }
+        else if (value == lowerBound)
+        {
+            logger.logWarning(sensorName + " lower bound hit! Value: " + value);
+        }
+        else if (value == upperBound)
+        {
+            logger.logWarning(sensorName + " upper bound hit! Value: " + value);
+        }
+        else if (value > target && value < upperBound)
+        {
+            logger.logInfo(sensorName + " within range above target. Value: " + value);
+        }
+        else if(value < target && value > lowerBound)
+        {
+            logger.logInfo(sensorName + " within range below target. Value: " + value);
+        }
+        else if (value > upperBound)
+        {
+            logger.logError(sensorName + " above valid range! Value: " + value);
         }
         else
         {
-            logger.logError(value + "is outside of valid range!");
-            return false;
+            logger.logError(sensorName + " below valid range! Value: " + value);
         }
-        
     }
 
     @Override
-    public void alter(Actuator actuator, Sensor sensor) 
+    public void monitor(Actuator actuator, Sensor sensor) 
     {
+        if (!isControllerActive())
+        {
+            logger.logError(controllerName + " is currently inactive.");
+            return;
+        }
+        else
+        {
         //Use actuators to change value towards target value.   
+        checkSensor(sensor);
         actuator.simulateValueChange(sensor);
-
+        }
     }
-
-    //Logger to inform the system we are in acceptable ranges and what the current value is.
-    @Override
-    public void informSystem()
-    {
-        //TODO Add code
-    }
-
-    //Logger to alert the system we are not in acceptable ranges and what the current value is.
-    @Override
-    public void alertSystem()
-    {
-        //TODO Add code
-    }
-    
 
     public String getName()
     {
