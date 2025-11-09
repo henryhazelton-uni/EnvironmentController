@@ -29,12 +29,14 @@ public class DashboardControl extends Application {
     private Label pressureLabel;
     private Label humidityLabel;
 
+    private Button ecuControlButton;
+
     //lights for status
     private Circle tempLight;
     private Circle pressureLight;
     private Circle humidityLight;
 
-    //Setter method to assign ECU before launch
+    //setter method to assign ECU before launch
     public static void setEcu(ECU ecuInstance) {
         ecu = ecuInstance;
     }
@@ -100,12 +102,31 @@ public class DashboardControl extends Application {
             }
         });
 
+        
+        ecuControlButton = new Button("Activate ECU");
+        ecuControlButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;");
+        ecuControlButton.setMaxWidth(Double.MAX_VALUE);
+
+        ecuControlButton.setOnAction(e -> {
+            if (!ecu.isActive()) { 
+                ecu.activateECU();
+                ecuControlButton.setText("Deactivate ECU");
+                ecuControlButton.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold;");
+            } else {
+                ecu.deactivateECU();
+                ecuControlButton.setText("Activate ECU");
+                ecuControlButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;");
+            }
+        });
+
+
         sideMenu.getChildren().addAll(
                 testTitle,
                 tempLabel, tempField,
                 pressureLabelField, pressureField,
                 humidityLabelField, humidityField,
-                updateButton
+                updateButton,
+                ecuControlButton
         );
 
         //Main content area
@@ -247,11 +268,10 @@ public class DashboardControl extends Application {
             if (loggingPanelReference.getChildren().size() > 25) {
                 loggingPanelReference.getChildren().remove(9);
             }
-        });
-    }
+        };
+    });}
 
     public static void main(String[] args) {
         launch(args);
     }
 }
-
