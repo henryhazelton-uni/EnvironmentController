@@ -71,6 +71,10 @@ public class ECU {
         loopECU();
     }
 
+    public boolean isActive() {
+        return ecuActive;
+    }
+
     public void deactivateECU()
     {
         ecuActive = false;
