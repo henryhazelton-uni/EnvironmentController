@@ -58,6 +58,16 @@ public class Sensor implements SensorInterface
         return acceptableHigh;
     }
 
+    public double roundValue(double value)
+    {
+        //Method to round the value to 1 decimal place.
+        double roundValue = value;
+
+        roundValue = Math.round(roundValue * 10.0) / 10.0;
+        
+        return roundValue;
+    }
+
     // Getters and setters.
 
     @Override
@@ -70,8 +80,8 @@ public class Sensor implements SensorInterface
         }
         else
         {
-            logger.logInfo(sensorName + " current value: " + value);
-            return value;
+            logger.logInfo(sensorName + " current value: " + roundValue(value));
+            return roundValue(value);
         }
     }
 
@@ -84,8 +94,8 @@ public class Sensor implements SensorInterface
         }
         else
         {
-            this.value = value;
-            logger.logInfo(sensorName + " reading set to " + value);
+            this.value = roundValue(value);
+            logger.logInfo(sensorName + " reading set to " + roundValue(value));
         }
     }
 
