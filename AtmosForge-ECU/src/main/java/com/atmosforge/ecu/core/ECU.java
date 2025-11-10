@@ -14,6 +14,8 @@ import com.atmosforge.ecu.sensors.HumiditySensor;
 import com.atmosforge.ecu.sensors.PressureSensor;
 import com.atmosforge.ecu.sensors.TemperatureSensor;
 
+import javafx.application.Application;
+
 
 public class ECU {
 
@@ -62,6 +64,8 @@ public class ECU {
         DashboardControl.setEcu(ecu);
         DashboardControl.main(args);
 
+        new Thread(() -> ecu.activateECU()).start();
+        Application.launch(DashboardControl.class);
         
     }
 
@@ -104,12 +108,15 @@ public class ECU {
             runSystem(getHumiditySensor(), geHumidityController(), getHumidityActuator());
 
             
-            this.dashboardControl.updateDashboardValues();
+            DashboardControl dashboard = DashboardControl.getInstance();
+            if (dashboard != null) {
+                dashboard.updateDashboardValues();
+            }
             
 
             try 
             {
-                Thread.sleep(3000);
+                Thread.sleep(1000);
             } 
             catch (InterruptedException e) 
             {
