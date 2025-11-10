@@ -33,4 +33,26 @@ class TemperatureSensorTest {
         assertEquals(5, value, "tempSensor should record the value");
         assertTrue(value < tempSensor.getLowRange(), "Sensor reading should be lower than allowed range");
     }
+
+    @Test
+    void testOnEdgeHigh() {
+        TemperatureSensor tempSensor = new TemperatureSensor("sensor", 25, 10);
+        tempSensor.activateSensor();
+        tempSensor.setValue(35);
+        double value = tempSensor.getValue();
+
+        assertEquals(35, value, "tempSensor should record the value");
+        assertTrue(value == tempSensor.getHighRange(), "Sensor reading should be on edge of allowed range");
+    }
+
+    @Test
+    void testOnEdgeLow() {
+        TemperatureSensor tempSensor = new TemperatureSensor("sensor", 25, 10);
+        tempSensor.activateSensor();
+        tempSensor.setValue(15);
+        double value = tempSensor.getValue();
+
+        assertEquals(15, value, "tempSensor should record the value");
+        assertTrue(value == tempSensor.getLowRange(), "Sensor reading should be on edge of allowed range");
+    }
 }
