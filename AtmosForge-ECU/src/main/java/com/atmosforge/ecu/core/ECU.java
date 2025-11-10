@@ -32,6 +32,7 @@ public class ECU {
     private final HumidityActuator humidityActuator;
 
     private final DashboardControl dashboardControl;
+    private final LoggingManager logger;
 
     private Thread ecuLoop;
 
@@ -120,7 +121,7 @@ public class ECU {
             } 
             catch (InterruptedException e) 
             {
-                //Logger
+                logger.logError("Error: " + e);
             }
             }
         }, "ECU Loop");
@@ -133,6 +134,7 @@ public class ECU {
         if (!sensor.isSensorActive() || !controller.isControllerActive() || !actuator.isActuatorActive())
         {
             //One of the components is not running so the system will not work, log error.
+            logger.logError("A component is not running, check if ECU is active");
             return;
         }
         else
@@ -152,7 +154,7 @@ public class ECU {
         }
         catch(Exception e)
         {
-            //Logger logic here.
+            logger.logError("Error: " + e);
         }
     }
 
@@ -166,7 +168,7 @@ public class ECU {
         }
         catch (Exception e)
         {
-            //Logger logic here.
+            logger.logError("Error: " + e);
         }
     }
 
