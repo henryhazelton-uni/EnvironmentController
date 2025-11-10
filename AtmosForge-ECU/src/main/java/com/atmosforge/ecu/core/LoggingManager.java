@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * LoggingManager provides a simple implementation 
  * of the LoggerInterface that outputs a message to 
- * system console
+ * Dashboard Control
  */
 public class LoggingManager implements LoggerInterface
 {
