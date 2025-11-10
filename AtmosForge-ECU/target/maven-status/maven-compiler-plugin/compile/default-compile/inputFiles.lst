@@ -5,13 +5,13 @@ C:\Users\aryan\OneDrive - Blackpool and The Fylde College\code\EnvironmentContro
 C:\Users\aryan\OneDrive - Blackpool and The Fylde College\code\EnvironmentController\AtmosForge-ECU\src\main\java\com\atmosforge\ecu\core\ECU.java
 C:\Users\aryan\OneDrive - Blackpool and The Fylde College\code\EnvironmentController\AtmosForge-ECU\src\main\java\com\atmosforge\ecu\sensors\TemperatureSensor.java
 C:\Users\aryan\OneDrive - Blackpool and The Fylde College\code\EnvironmentController\AtmosForge-ECU\src\main\java\com\atmosforge\ecu\abstracts\Sensor.java
-C:\Users\aryan\OneDrive - Blackpool and The Fylde College\code\EnvironmentController\AtmosForge-ECU\src\main\java\com\atmosforge\ecu\controllers\DashboardControl.java
 C:\Users\aryan\OneDrive - Blackpool and The Fylde College\code\EnvironmentController\AtmosForge-ECU\src\main\java\com\atmosforge\ecu\interfaces\ActuatorInterface.java
 C:\Users\aryan\OneDrive - Blackpool and The Fylde College\code\EnvironmentController\AtmosForge-ECU\src\main\java\com\atmosforge\ecu\controllers\HumidityController.java
 C:\Users\aryan\OneDrive - Blackpool and The Fylde College\code\EnvironmentController\AtmosForge-ECU\src\main\java\com\atmosforge\ecu\abstracts\Controller.java
 C:\Users\aryan\OneDrive - Blackpool and The Fylde College\code\EnvironmentController\AtmosForge-ECU\src\main\java\com\atmosforge\ecu\actuators\TemperatureActuator.java
 C:\Users\aryan\OneDrive - Blackpool and The Fylde College\code\EnvironmentController\AtmosForge-ECU\src\main\java\com\atmosforge\ecu\sensors\HumiditySensor.java
 C:\Users\aryan\OneDrive - Blackpool and The Fylde College\code\EnvironmentController\AtmosForge-ECU\src\main\java\com\atmosforge\ecu\core\LoggingManager.java
+C:\Users\aryan\OneDrive - Blackpool and The Fylde College\code\EnvironmentController\AtmosForge-ECU\src\main\java\com\atmosforge\ecu\core\DashboardControl.java
 C:\Users\aryan\OneDrive - Blackpool and The Fylde College\code\EnvironmentController\AtmosForge-ECU\src\main\java\com\atmosforge\ecu\controllers\TemperatureController.java
 C:\Users\aryan\OneDrive - Blackpool and The Fylde College\code\EnvironmentController\AtmosForge-ECU\src\main\java\com\atmosforge\ecu\sensors\PressureSensor.java
 C:\Users\aryan\OneDrive - Blackpool and The Fylde College\code\EnvironmentController\AtmosForge-ECU\src\main\java\com\atmosforge\ecu\actuators\HumidityActuator.java
