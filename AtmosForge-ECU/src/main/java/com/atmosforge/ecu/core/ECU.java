@@ -14,6 +14,7 @@ import com.atmosforge.ecu.sensors.HumiditySensor;
 import com.atmosforge.ecu.sensors.PressureSensor;
 import com.atmosforge.ecu.sensors.TemperatureSensor;
 
+
 public class ECU {
 
     private final TemperatureSensor temperatureSensor;
@@ -27,6 +28,8 @@ public class ECU {
     private final TemperatureActuator temperatureActuator;
     private final PressureActuator pressureActuator;
     private final HumidityActuator humidityActuator;
+
+    private final DashboardControl dashboardControl;
 
     private Thread ecuLoop;
 
@@ -44,6 +47,8 @@ public class ECU {
         this.temperatureActuator = new TemperatureActuator("Air Conditioning");
         this.pressureActuator = new PressureActuator("Pressure Actuator");
         this.humidityActuator = new HumidityActuator("Humidity Actuator");
+
+        this.dashboardControl = new DashboardControl();
     }
 
 
@@ -97,6 +102,10 @@ public class ECU {
             runSystem(getTemperatureSensor(), getTemperatureController(), getTemperatureActuator());
             runSystem(getPressureSensor(), getPressureController(), getPressureActuator());
             runSystem(getHumiditySensor(), geHumidityController(), getHumidityActuator());
+
+            
+            this.dashboardControl.updateDashboardValues();
+            
 
             try 
             {

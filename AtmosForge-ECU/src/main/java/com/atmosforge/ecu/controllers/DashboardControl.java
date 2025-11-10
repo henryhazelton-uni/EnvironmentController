@@ -18,10 +18,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-
 public class DashboardControl extends Application {
 
     private static VBox loggingPanelReference;
+    private static DashboardControl instance;
 
     private static ECU ecu;
 
@@ -82,6 +82,16 @@ public class DashboardControl extends Application {
 
         //Update logic
         updateButton.setOnAction(e -> {
+
+            if (!ecu.isActive()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("ECU Inactive");
+                alert.setHeaderText("Cannot Apply Changes");
+                alert.setContentText("Please activate the ECU before applying changes.");
+                alert.showAndWait();
+                return;
+            }
+
             try {
                 double newTemp = Double.parseDouble(tempField.getText());
                 double newPressure = Double.parseDouble(pressureField.getText());
@@ -112,6 +122,7 @@ public class DashboardControl extends Application {
                 ecu.activateECU();
                 ecuControlButton.setText("Deactivate ECU");
                 ecuControlButton.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold;");
+                updateDashboardValues();
             } else {
                 ecu.deactivateECU();
                 ecuControlButton.setText("Activate ECU");
@@ -205,7 +216,7 @@ public class DashboardControl extends Application {
         primaryStage.show();
     }
 
-    private void updateDashboardValues() {
+    public void updateDashboardValues() {
         if (ecu == null) {
             System.out.println("ECU not initialised — cannot update dashboard values.");
             return;
