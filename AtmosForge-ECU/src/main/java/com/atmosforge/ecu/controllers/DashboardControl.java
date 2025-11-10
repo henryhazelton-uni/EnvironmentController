@@ -285,8 +285,8 @@ public class DashboardControl extends Application {
             if (loggingPanelReference.getChildren().size() > 25) {
                 loggingPanelReference.getChildren().remove(25);
             }
-        };
-    });}
+        });
+    };
 
     public static void main(String[] args) {
         launch(args);
