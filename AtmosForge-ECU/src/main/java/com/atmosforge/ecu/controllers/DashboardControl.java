@@ -3,6 +3,7 @@ package com.atmosforge.ecu.controllers;
 import com.atmosforge.ecu.core.ECU;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -18,10 +19,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-
 public class DashboardControl extends Application {
 
     private static VBox loggingPanelReference;
+    private static DashboardControl instance;
 
     private static ECU ecu;
 
@@ -41,8 +42,13 @@ public class DashboardControl extends Application {
         ecu = ecuInstance;
     }
 
+    public static DashboardControl getInstance() {
+        return instance;
+    }
+
     @Override
     public void start(Stage primaryStage) {
+        instance = this;
         //Top bar
         HBox topBar = new HBox();
         topBar.setPadding(new Insets(15));
@@ -82,6 +88,16 @@ public class DashboardControl extends Application {
 
         //Update logic
         updateButton.setOnAction(e -> {
+
+            if (!ecu.isActive()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("ECU Inactive");
+                alert.setHeaderText("Cannot Apply Changes");
+                alert.setContentText("Please activate the ECU before applying changes.");
+                alert.showAndWait();
+                return;
+            }
+
             try {
                 double newTemp = Double.parseDouble(tempField.getText());
                 double newPressure = Double.parseDouble(pressureField.getText());
@@ -112,6 +128,7 @@ public class DashboardControl extends Application {
                 ecu.activateECU();
                 ecuControlButton.setText("Deactivate ECU");
                 ecuControlButton.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold;");
+                updateDashboardValues();
             } else {
                 ecu.deactivateECU();
                 ecuControlButton.setText("Activate ECU");
@@ -205,34 +222,37 @@ public class DashboardControl extends Application {
         primaryStage.show();
     }
 
-    private void updateDashboardValues() {
+    public void updateDashboardValues() {
         if (ecu == null) {
             System.out.println("ECU not initialised — cannot update dashboard values.");
             return;
         }
 
-        //Update text values
-        temperatureLabel.setText(String.format("%.1f°C", ecu.getTemperatureSensor().getValue()));
-        pressureLabel.setText(String.format("%.1f kPa", ecu.getPressureSensor().getValue()));
-        humidityLabel.setText(String.format("%.1f%%", ecu.getHumiditySensor().getValue()));
 
-        //Get sensor values and ranges
-        double tempValue = ecu.getTemperatureSensor().getValue();
-        double tempLow = ecu.getTemperatureSensor().getLowRange();
-        double tempHigh = ecu.getTemperatureSensor().getHighRange();
+        Platform.runLater(() -> {
+            //Update text values
+            temperatureLabel.setText(String.format("%.1f°C", ecu.getTemperatureSensor().getValue()));
+            pressureLabel.setText(String.format("%.1f kPa", ecu.getPressureSensor().getValue()));
+            humidityLabel.setText(String.format("%.1f%%", ecu.getHumiditySensor().getValue()));
 
-        double pressureValue = ecu.getPressureSensor().getValue();
-        double pressureLow = ecu.getPressureSensor().getLowRange();
-        double pressureHigh = ecu.getPressureSensor().getHighRange();
+            //Get sensor values and ranges
+            double tempValue = ecu.getTemperatureSensor().getValue();
+            double tempLow = ecu.getTemperatureSensor().getLowRange();
+            double tempHigh = ecu.getTemperatureSensor().getHighRange();
 
-        double humidityValue = ecu.getHumiditySensor().getValue();
-        double humidityLow = ecu.getHumiditySensor().getLowRange();
-        double humidityHigh = ecu.getHumiditySensor().getHighRange();
+            double pressureValue = ecu.getPressureSensor().getValue();
+            double pressureLow = ecu.getPressureSensor().getLowRange();
+            double pressureHigh = ecu.getPressureSensor().getHighRange();
 
-        //Update colors based on validity
-        updateIndicatorColor(tempLight, tempValue, tempLow, tempHigh);
-        updateIndicatorColor(pressureLight, pressureValue, pressureLow, pressureHigh);
-        updateIndicatorColor(humidityLight, humidityValue, humidityLow, humidityHigh);
+            double humidityValue = ecu.getHumiditySensor().getValue();
+            double humidityLow = ecu.getHumiditySensor().getLowRange();
+            double humidityHigh = ecu.getHumiditySensor().getHighRange();
+
+            //Update colors based on validity
+            updateIndicatorColor(tempLight, tempValue, tempLow, tempHigh);
+            updateIndicatorColor(pressureLight, pressureValue, pressureLow, pressureHigh);
+            updateIndicatorColor(humidityLight, humidityValue, humidityLow, humidityHigh);
+        });
     }
 
     private void updateIndicatorColor(Circle indicator, double value, double low, double high) {

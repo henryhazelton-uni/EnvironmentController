@@ -14,6 +14,9 @@ import com.atmosforge.ecu.sensors.HumiditySensor;
 import com.atmosforge.ecu.sensors.PressureSensor;
 import com.atmosforge.ecu.sensors.TemperatureSensor;
 
+import javafx.application.Application;
+
+
 public class ECU {
 
     private final TemperatureSensor temperatureSensor;
@@ -27,6 +30,8 @@ public class ECU {
     private final TemperatureActuator temperatureActuator;
     private final PressureActuator pressureActuator;
     private final HumidityActuator humidityActuator;
+
+    private final DashboardControl dashboardControl;
 
     private Thread ecuLoop;
 
@@ -44,6 +49,8 @@ public class ECU {
         this.temperatureActuator = new TemperatureActuator("Air Conditioning");
         this.pressureActuator = new PressureActuator("Pressure Actuator");
         this.humidityActuator = new HumidityActuator("Humidity Actuator");
+
+        this.dashboardControl = new DashboardControl();
     }
 
 
@@ -57,6 +64,8 @@ public class ECU {
         DashboardControl.setEcu(ecu);
         DashboardControl.main(args);
 
+        new Thread(() -> ecu.activateECU()).start();
+        Application.launch(DashboardControl.class);
         
     }
 
@@ -98,9 +107,16 @@ public class ECU {
             runSystem(getPressureSensor(), getPressureController(), getPressureActuator());
             runSystem(getHumiditySensor(), geHumidityController(), getHumidityActuator());
 
+            
+            DashboardControl dashboard = DashboardControl.getInstance();
+            if (dashboard != null) {
+                dashboard.updateDashboardValues();
+            }
+            
+
             try 
             {
-                Thread.sleep(3000);
+                Thread.sleep(1000);
             } 
             catch (InterruptedException e) 
             {
