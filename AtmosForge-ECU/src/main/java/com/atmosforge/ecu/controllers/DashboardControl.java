@@ -283,10 +283,7 @@ public class DashboardControl extends Application {
 
             // Add auto scrolling if logs overflow
             if (loggingPanelReference.getChildren().size() > 25) {
-                loggingPanelReference.getChildren().remove(9);
-            //Add auto scrolling if logs overflow
-            if (loggingPanelReference.getChildren().size() > 100) {
-                loggingPanelReference.getChildren().remove(1);
+                loggingPanelReference.getChildren().remove(25);
             }
         };
     });}
