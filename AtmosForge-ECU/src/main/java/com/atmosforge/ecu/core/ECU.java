@@ -31,7 +31,6 @@ public class ECU {
     private final PressureActuator pressureActuator;
     private final HumidityActuator humidityActuator;
 
-    private final DashboardControl dashboardControl;
     private final LoggingManager logger;
 
     private Thread ecuLoop;
@@ -51,7 +50,6 @@ public class ECU {
         this.pressureActuator = new PressureActuator("Pressure Actuator");
         this.humidityActuator = new HumidityActuator("Humidity Actuator");
 
-        this.dashboardControl = new DashboardControl();
         this.logger = new LoggingManager();
     }
 
