@@ -52,6 +52,7 @@ public class ECU {
         this.humidityActuator = new HumidityActuator("Humidity Actuator");
 
         this.dashboardControl = new DashboardControl();
+        this.logger = new LoggingManager();
     }
 
 
