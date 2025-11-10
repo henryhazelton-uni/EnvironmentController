@@ -39,6 +39,18 @@ public class Actuator implements ActuatorInterface
         return actuatorOn;
     }
 
+    /* 
+    In theory, in place of simulateValueChange, actuator would have a way to increase/decrease value using hardware.
+
+    For example, the temperature actuator would be an Air Conditioning (A/C) unit.
+    This A/C based on sensor.checkSensor() would decide whether to idle or circulate hot/cold air. 
+
+    This method simulates said value change and sets it on the sensor for testing purposes. 
+
+    The ECU would theoretically not have a sensor.setValue() as this would be directly read from the environment to the sensors.
+    */ 
+
+
     @Override
     public void simulateValueChange(Sensor sensor) 
     {
@@ -65,11 +77,12 @@ public class Actuator implements ActuatorInterface
 
         if (currentValue == target)
         {
+            //Make no change at target, here the actuator would likely have an idle/maintain state.
             return;
         }
         else if (currentValue < upperBound && currentValue > target)
         {
-            //Within range, fine tune but check change will not go under target.
+            //Within range above target, fine tune but check change will not go under target.
             if (currentValue - tolerance/10 >= target)
             {
                 newValue = currentValue - tolerance/10;
@@ -77,13 +90,14 @@ public class Actuator implements ActuatorInterface
             }
             else
             {
-                //Within 1/10 tolerance of target.
+                //Within 1/10 tolerance of target, final adjustment to target.
+                newValue = target;
                 return;
             }
         }
         else if (currentValue > lowerBound && currentValue < target) 
         {
-            //Within range, fine tune but check change will not go over target.
+            //Within range below target value, fine tune but check change will not go over target.
             if (currentValue + tolerance/10 <= target)
             {
                 newValue = currentValue + tolerance/10;
@@ -91,7 +105,8 @@ public class Actuator implements ActuatorInterface
             } 
             else
             {
-                //Within 1/10 tolerance of target.
+                //Within 1/10 tolerance of target, final adjustment to target.
+                newValue = target;
                 return;
             }
         }
